@@ -1,0 +1,41 @@
+{% extends 'users/base.html' %}
+{% load static %}
+{% block content %}
+{% block title %}Otp Verify{% endblock %}
+<div class="sign-inup">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-5">
+                <div class="sign-form">
+                    <div class="sign-inner">
+                        <div class="sign-logo" id="logo">
+                            <a href="index.html"><img src="{% static './users/images/logo.svg' %}" alt=""></a>
+                            <a href="index.html"><img class="logo-inverse" src="{% static './users/images/dark-logo.svg' %}" alt=""></a>
+                        </div>
+                        <div class="form-dt">
+                            <div class="form-inpts checout-address-step">
+                                <form method="POST">
+                                    {% csrf_token %}
+                                    <div class="form-title">
+                                        <h6>Otp Verify</h6>
+                                    </div>
+                                    <div class="form-group pos_rel text-center">
+                                        <label class="control-label">Enter Code</label>
+                                            <div class="form-group">
+                                                <input type="text" class="form-control" id="otp" name="otp" placeholder="Enter Otp" required>
+                                             </div>
+                                    </div>
+
+                                    <button class="login-btn hover-btn" type="submit">Verify</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock content %}

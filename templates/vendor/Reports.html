@@ -1,0 +1,115 @@
+{% extends 'vendor/base.html' %}
+{% load static %}
+{% block title %}Reports{% endblock %}
+{% block content %}
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
+
+</head>
+
+<body>
+<div>
+    <form method="post">
+        {% csrf_token %}
+        <h3>From:</h3><input type="date" id="start_date" name="start_date" required>
+        <h3>To:</h3><input type="date" id="end_date" name="end_date" required>
+        <button type="submit">Submit</button>
+    </form>
+</div>
+
+
+<h1 style="display: none;" id="complete">{{complete}}</h1>
+<h1 style="display: none;" id="pending">{{pending}}</h1>
+<h1 style="display: none;" id="canceledorders">{{canceled}}</h1>
+
+
+
+
+
+    <div class="col-xl-9 col-md-6 mb-6">
+        <canvas id="myChart"></canvas>
+    </div>
+
+
+    <script>
+
+        var completedorders = document.querySelector('#complete').textContent
+        var pendingorders = document.querySelector('#pending').textContent
+        var canceledorders = document.querySelector('#canceledorders').textContent
+
+        let myChart = document.getElementById('myChart').getContext('2d');
+
+        // Global Propeties
+        Chart.defaults.global.defaultFontFamily = 'Lato';
+        Chart.defaults.global.defaultFontSize = 19;
+        Chart.defaults.global.defaultFontColor = 'hotpink';
+
+
+        let massPopChart = new Chart(myChart, {
+            type: 'pie',
+            data: {
+                labels: ['Completed Orders', 'Pending Orders','Cancelled Orders'],
+                datasets: [{
+                    label: 'Population',
+                    data: [
+                    completedorders,
+                    pendingorders,
+                    canceledorders,
+                    ],
+                    label: 'Population',
+                    backgroundColor: [
+                        'red',
+                        'green',
+                        'blue',
+                    ],
+                    borderWidth: 1,
+                    borderColor: 'red',
+                    hoverBorderWidth: 3,
+                    hoverBorderColor: 'yellow'
+                }]
+            },
+            options: {
+                title: {
+                    display: true,
+                    text: 'Statistics Of Orders',
+                    fontSize: 20,
+                    fontColor: 'black'
+                },
+                legend: {
+                    display: true,
+                    position: 'right',
+                    labels: {
+                        fontColor: 'black',
+                    }
+                },
+                layout: {
+                    padding: {
+                        left: 50,
+                        right: 0,
+                        bottom: 0,
+                        top: 0,
+                    }
+                },
+                tooltips: {
+                    mode: 'index',
+                    axis: 'X'
+
+                }
+            }
+        });
+
+
+    </script>
+
+
+
+</body>
+
+</html>
+
+
+{% endblock content %}

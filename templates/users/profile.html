@@ -1,0 +1,538 @@
+{% extends 'users/base.html' %}
+{% load static %}
+{% block content %}
+{% block title %}Edit Profile{% endblock %}
+<style>
+    .profile-pic {
+        max-width: 100%;
+        display: block;
+        border-radius: 50%;
+        -webkit-border-radius: 50%;
+    }
+
+    .profile-image img {
+        margin-bottom: 1.5rem;
+    }
+
+    .change-photo-btn {
+        background-color: hsl(212, 87%, 35%);
+        border-radius: 50px;
+        color: #fff;
+        cursor: pointer;
+        display: block;
+        font-size: 13px;
+        font-weight: 600;
+        margin: 0 auto;
+        padding: 10px 15px;
+        position: relative;
+        transition: .3s;
+        text-align: center;
+        width: 220px;
+    }
+
+    .change-photo-btn input.upload {
+        bottom: 0;
+        cursor: pointer;
+        filter: alpha(opacity=0);
+        left: 0;
+        margin: 0;
+        opacity: 0;
+        padding: 0;
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: 220px;
+    }
+
+    .dropzone {
+        background-color: #fbfbfb;
+        border: 2px dashed rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-icon {
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        text-align: center;
+        position: absolute;
+        padding: 0;
+        font-size: 10px;
+        width: 20px;
+        height: 20px;
+        display: -webkit-inline-box;
+        display: -ms-inline-flexbox;
+        display: inline-flex;
+        right: 3px;
+        top: 3px;
+        justify-content: center;
+        -webkit-justify-content: center;
+        -ms-flex-pack: center;
+    }
+
+    .upload-images {
+        position: relative;
+        width: 80px;
+    }
+
+    .upload-images img {
+        border-radius: 4px;
+        height: 80px;
+        width: auto;
+    }
+
+    .upload-wrap {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+    }
+
+    .upload-wrap .upload-images+.upload-images {
+        margin-left: 20px;
+    }
+
+    .contact-card .card-body {
+        padding-bottom: 0.625rem;
+    }
+
+    .custom_price_cont {
+        margin-top: 20px;
+    }
+
+    .btn.btn-danger.trash {
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        height: 46px;
+        width: 46px;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        justify-content: center;
+        -webkit-justify-content: center;
+        -ms-flex-pack: center;
+    }
+
+    .add-more a {
+        color: #20c0f3;
+    }
+
+    .bootstrap-tagsinput {
+        border-color: #dcdcdc;
+        box-shadow: inherit;
+        min-height: 46px;
+        width: 100%;
+        border-radius: 0;
+    }
+
+    .bootstrap-tagsinput.focus {
+        border-color: #bbb;
+    }
+
+    .bootstrap-tagsinput .tag {
+        background-color: hsl(212, 87%, 35%);
+        color: #fff;
+        display: inline-block;
+        font-size: 14px;
+        font-weight: normal;
+        margin-right: 2px;
+        padding: 11px 15px;
+        border-radius: 0;
+    }
+
+    .services-card .bootstrap-tagsinput input {
+        width: 160px;
+    }
+
+    .submit-section .submit-btn {
+        padding: 12px 30px;
+        font-weight: 600;
+        font-size: 16px;
+        min-width: 120px;
+    }
+
+    .submit-section .submit-btn+.submit-btn {
+        margin-left: 15px;
+    }
+
+    .container-fluid {
+        padding-top: 20px;
+    }
+
+    h1 {
+        text-align: center;
+        font-family: monospace;
+        font-size: 0.8cm;
+    }
+
+    .hai {
+        text-align: center;
+        font-family: monospace;
+        font-size: 0.6cm;
+
+
+    }
+
+
+    .bb {
+
+        padding-top: 10px;
+        padding-bottom: 20px;
+        padding-left: 500px;
+    }
+
+    .page {
+        margin: 1em auto;
+        max-width: 768px;
+        display: flex;
+        align-items: flex-start;
+        flex-wrap: wrap;
+        height: 100%;
+    }
+
+    .box {
+        padding: 0.5em;
+        width: 100%;
+        margin: 0.5em;
+    }
+
+    .box-2 {
+        padding: 0.5em;
+        width: calc(100%/2 - 1em);
+    }
+
+    .options label,
+    .options input {
+
+        width: 10em;
+        padding: 0.5em 1em;
+    }
+
+    .btn {
+
+        padding: 0.5em 1em;
+        text-decoration: none;
+        margin: 0.8em 0.3em;
+        display: inline-block;
+        cursor: pointer;
+        color: rgb(255, 255, 255);
+        box-shadow: 0 0 40px 40px #4cbf12 inset, 0 0 0 0 #4cbf12;
+        -webkit-transition: all 150ms ease-in-out;
+        transition: all 150ms ease-in-out;
+    }
+
+
+    .hide {
+        display: none;
+    }
+
+    img {
+        max-width: 100%;
+
+    }
+
+    .images {
+
+        padding-top: 50px;
+        padding-left: 100px;
+    }
+
+    .confirm {
+        margin-bottom: 100px;
+    }
+</style>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropper/2.3.4/cropper.min.css">
+
+<!-- Body Start -->
+<div class="wrapper">
+    <div class="dashboard-group">
+        <div class="container">
+            <div class="col-lg-12">
+                <div class="user-dt">
+
+                    {% if user_profile.ImageURL == '' %}
+                    <div class="user-img">
+                        <img src="{% static './users/images/avatar/img-5.jpg' %}" alt="">
+                    </div>
+                    {% else %}
+                    <div class="user-img">
+                        <img src="{{user_profile.ImageURL}}" alt="">
+                    </div>
+                    {% endif %}
+
+                    <h4>{{request.user}}</h4>
+                    <div class="earn-points"><img src="{% static 'users/images/Dollar.svg' %}" alt="">Refferal Link : <span
+                        style="color: blue;"><a>{{ request.META.HTTP_HOST }}/{{"reffral_signup"}}/{{customer_details.refferal_code}}</a></span>
+                    </div>
+                    <div><br>
+                        <span class="earn-points">Total {{refferd_users_count}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-4">
+                    <div class="left-side-tabs">
+                        <div class="dashboard-left-links">
+                            <a href="{% url 'user_dashboard' %}" class="user-item"><i
+                                    class="uil uil-apps"></i>Overview</a>
+                            <a href="{% url 'user_profile' request.user.id %}" class="user-item active"><i
+                                    class="uil uil-apps"></i>Profile</a>
+                            <a href="{% url 'my_orders' %}" class="user-item"><i class="uil uil-box"></i>My
+                                Orders</a>
+                            <a href="{% url 'rewards' %}" class="user-item"><i class="uil uil-gift"></i>My
+                                Rewards</a>
+                            <a href="{% url 'wallet' %}" class="user-item"><i class="uil uil-wallet"></i>My
+                                Wallet</a>
+                            <a href="{% url 'wishlist' %}" class="user-item"><i class="uil uil-heart"></i>Shopping
+                                Wishlist</a>
+                            <a href="{% url 'my_address' %}" class="user-item"><i class="uil uil-location-point"></i>My
+                                Address</a>
+                            <a href="{% url 'logout' %}" class="user-item"><i class="uil uil-exit"></i>Logout</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-9 col-md-8">
+                    <div class="dashboard-right">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="main-title-tab">
+                                    <h4><i class="uil uil-wallet"></i>My Profile</h4>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-12 col-md-12">
+                                <div class="pdpt-bg">
+                                    <div class="pdpt-title">
+                                        <h4>Edit My profile</h4>
+                                    </div>
+                                    <form action="{% url 'user_profile' request.user.id %}"
+                                        enctype="multipart/form-data" method="post">
+                                        {% csrf_token %}
+                                        <div class="add-cash-body">
+                                            <div class="row">
+                                                <div class="col-lg-12 col-md-12">
+                                                    <div class="form-group mt-1">
+                                                        <!-- image -->
+                                                        <div class="images">
+                                                            <div class="profile-img d-flex p-2 bd-highlight">
+                                                                <img id="cropped" class="cropped profile-pic"
+                                                                    src="{{customer.profile_image.url}}" alt="">
+
+                                                                <!-- leftbox -->
+                                                                <div class="box-2">
+                                                                    <div class="result"></div>
+                                                                </div>
+                                                                <!--rightbox-->
+                                                                <div class="box-2 img-result hide">
+                                                                    <!-- result of crop -->
+                                                                    <!-- <img id="cropped" class="cropped" src="" alt=""> -->
+                                                                </div>
+                                                            </div>
+                                                            <input id="imageBaseData" class="hidden" name="image64data"
+                                                                type="hidden" required=True name="pro_img" type="text">
+
+                                                            <div class="upload-img">
+                                                                <div class="change-photo-btn">
+                                                                    <span><i class="fa fa-upload"></i> Upload
+                                                                        Photo</span>
+                                                                    <input type="file" class='upload' id="file-input">
+                                                                </div>
+                                                                <button id="load" type="button" aria-required="true"
+                                                                    class="btn save hide ">Confirm</button>
+                                                            </div>
+
+                                                            <!-- input file -->
+                                                            <div class="box">
+                                                                <div class="options hide">
+                                                                    <!-- <label> Width</label> -->
+                                                                    <input type="hidden" name="myfile" class="img-w "
+                                                                        value="300" min="100" max="1200" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!-- save btn -->
+                                                        <div class="confirm">
+
+                                                        </div>
+
+                                                        <!-- download btn -->
+                                                    </div>
+                                                </div>
+                                                <!-- ///image -->
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="form-inpts checout-address-step">
+                                                <div class="msg">
+                                                    {% for message in messages %}
+                                                    <h4 style="text-align: center; color: red;">
+                                                        {{message}}</h4>
+                                                    {% endfor %}
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <input type="text" class="form-control" id="name" name="first_name"
+                                                        placeholder="First Name" value="{{customers_data.first_name}}"
+                                                        required>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <input type="text" class="form-control" id="name" name="last_name"
+                                                        placeholder="Last Name" value="{{customers_data.last_name}}"
+                                                        required>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <input type="number" class="form-control" id="name"
+                                                        name="mobile_number" placeholder="Phone Number"
+                                                        value="{{additional_customer_data.mobile_number}}" required>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <input type="username" class="form-control" id="username"
+                                                        name="username" placeholder="Username"
+                                                        value="{{customers_data.username}}" required>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <input type="email" class="form-control" id="email" name="email"
+                                                        placeholder="Email" value="{{customers_data.email}}" required>
+                                                </div>
+
+
+                                                <!-- hidden field -->
+                                                <!-- <input class="d-none" type="file" id="file-input" accept="image/*">
+
+                                                    <textarea name="pro_img" class="d-none"
+                                                        id="imageBaseData"></textarea> -->
+                                                <div></div>
+                                            </div>
+                                        </div>
+
+                                </div>
+                                <div class="text-center">
+                                    <button class="login-btn hover-btn" type="submit">Update</button>
+                                </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+<!-- Body End -->
+
+
+<script>
+    function myFunction() {
+        var x = document.getElementById("myInput");
+        if (x.type === "password") {
+            x.type = "text";
+        } else {
+            x.type = "password";
+        }
+    }
+</script>
+
+<script>
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#blah')
+                    .attr('src', e.target.result);
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/0.8.1/cropper.min.js"></script>
+
+<script>
+    // vars
+    let result = document.querySelector('.result'),
+        img_result = document.querySelector('.img-result'),
+        img_w = document.querySelector('.img-w'),
+        img_h = document.querySelector('.img-h'),
+        options = document.querySelector('.options'),
+        save = document.querySelector('.save'),
+        cropped = document.querySelector('.cropped'),
+        dwn = document.querySelector('.download'),
+        upload = document.querySelector('#file-input'),
+        cropper = '';
+
+    // on change show image with crop options
+    upload.addEventListener('change', (e) => {
+        if (e.target.files.length) {
+            // start file reader
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                if (e.target.result) {
+                    // create new image
+                    let img = document.createElement('img');
+                    img.id = 'image';
+                    img.src = e.target.result
+                    // clean result before
+                    result.innerHTML = '';
+                    // append new image
+                    result.appendChild(img);
+                    // show save btn and options
+                    save.classList.remove('hide');
+                    options.classList.remove('hide');
+                    // init cropper
+                    cropper = new Cropper(img);
+                }
+            };
+            reader.readAsDataURL(e.target.files[0]);
+        }
+    });
+
+    // save on click
+    save.addEventListener('click', (e) => {
+        e.preventDefault();
+        // get result to data uri
+        let imgSrc = cropper.getCroppedCanvas({
+            width: img_w.value // input value
+        }).toDataURL();
+        // remove hide class of img
+        cropped.classList.remove('hide');
+        img_result.classList.remove('hide');
+        // show image cropped
+        cropped.src = imgSrc;
+        // dwn.classList.remove('hide');
+        // dwn.download = 'imagename.png';
+        // dwn.setAttribute('href', imgSrc);
+
+    });
+
+</script>
+<script>
+    var button = document.getElementById('load');
+    button.addEventListener('click', function () {
+        setImageData();
+        console.log('Cropped')
+    })
+
+
+    function setImageData() {
+
+        var imageElement = document.getElementById('cropped');
+        var imageData = imageElement.src;
+        var hiddenElement = document.getElementById("imageBaseData");
+        hiddenElement.value = imageData;
+        console.log("data set")
+    }
+</script>
+
+{% endblock content %}

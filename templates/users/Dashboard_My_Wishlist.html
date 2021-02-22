@@ -1,0 +1,127 @@
+﻿{% extends 'users/base.html' %}
+{% load static %}
+{% block content %}
+{% block title %}Wishlists{% endblock %}
+<div class="wrapper">
+    <div class="dashboard-group">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="user-dt">
+
+                        {% if user_profile.ImageURL == '' %}
+                        <div class="user-img">
+                            <img src="{% static './users/images/avatar/img-5.jpg' %}" alt="">
+                        </div>
+                        {% else %}
+                        <div class="user-img">
+                            <img src="{{user_profile.ImageURL}}" alt="">
+                        </div>
+                        {% endif %}
+
+                        <h4>{{request.user}}</h4>
+                        <div class="earn-points"><img src="{% static 'users/images/Dollar.svg' %}" alt="">Refferal Link : <span
+                            style="color: blue;"><a>{{ request.META.HTTP_HOST }}/{{"reffral_signup"}}/{{customer_details.refferal_code}}</a></span>
+                        </div>
+                        <div><br>
+                            <span class="earn-points">Total {{refferd_users_count}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-4">
+                    <div class="left-side-tabs">
+                        <div class="dashboard-left-links">
+                            <a href="{% url 'user_dashboard' %}" class="user-item"><i
+                                    class="uil uil-apps"></i>Overview</a>
+                            <a href="{% url 'user_profile' request.user.id %}" class="user-item"><i
+                                    class="uil uil-apps"></i>Profile</a>
+                            <a href="{% url 'my_orders' %}" class="user-item"><i class="uil uil-box"></i>My
+                                Orders</a>
+                            <a href="{% url 'rewards' %}" class="user-item"><i class="uil uil-gift"></i>My
+                                Rewards</a>
+                            <a href="{% url 'wallet' %}" class="user-item"><i class="uil uil-wallet"></i>My
+                                Wallet</a>
+                            <a href="{% url 'wishlist' %}" class="user-item active"><i class="uil uil-heart"></i>Shopping
+                                Wishlist</a>
+                            <a href="{% url 'my_address' %}" class="user-item"><i class="uil uil-location-point"></i>My
+                                Address</a>
+                            <a href="{% url 'logout' %}" class="user-item"><i class="uil uil-exit"></i>Logout</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-9 col-md-8">
+                    <div class="dashboard-right">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="main-title-tab">
+                                    <h4><i class="uil uil-heart"></i>Shopping Wishlist</h4>
+                                </div>
+                            </div>
+                            <div class="col-lg-12 col-md-12">
+                                {% if wishlist_count == 0 %}
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="box-element">
+                                            <table class="table">
+                                                <tr>
+                                                    <div class="empty-cart-area pb-100px pt-100px" style="padding: 100px;">
+                                                        <div class="container">
+                                                            <div class="row">
+                                                                <div class="col-md-12">
+                                                                    <div class="empty-text-contant text-center">
+                                                                        <i class="icon-handbag"></i>
+                                                                        <h1>There Are No Items Added To Wishlist</h1>
+                                                                        <a class="empty-cart-btn" href="{% url 'user_homepage' %}">
+                                                                            <i class="ion-ios-arrow-left"> </i> Continue shopping
+                                                                        </a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                {%else%}
+                                <div class="pdpt-bg">
+                                    {% for wishlist in wishlist_items %}
+                                    <div class="wishlist-body-dtt">
+                                        <div class="cart-item">
+                                            <div class="cart-product-img">
+                                                <img src="{{wishlist.product.ImageURL}}" alt="">
+                                                <div class="offer-badge">4% OFF</div>
+                                            </div>
+                                            <div class="cart-text">
+                                                <h4>{{wishlist.product.product_name}}</h4>
+                                                <div class="cart-item-price">₹ {{wishlist.product.price}} <span>₹18</span></div>
+                                        
+                                                <button data-product="{{wishlist.product.id}}" data-action="wishlist_delete" type="button" class="cart-close-btn update-cart"><i class="uil uil-trash-alt"></i></button>
+                                                <ul class="ordr-crt-share">
+                                                    <li>
+                                                        <button data-product="{{wishlist.product.id}}" data-action="wishlist_add" class="add-cart-btn hover-btn add-btn update-cart"><i class="uil uil-shopping-cart-alt"></i>Add to Cart</button>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

@@ -1,0 +1,189 @@
+﻿{% extends 'users/base.html' %}
+{% load static %}
+{% block content %}
+{% block title %}My Wallet{% endblock %}
+<div class="wrapper">
+    <div class="dashboard-group">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="user-dt">
+
+                        {% if user_profile.ImageURL == '' %}
+                        <div class="user-img">
+                            <img src="{% static './users/images/avatar/img-5.jpg' %}" alt="">
+                        </div>
+                        {% else %}
+                        <div class="user-img">
+                            <img src="{{user_profile.ImageURL}}" alt="">
+                        </div>
+                        {% endif %}
+
+                        <h4>{{request.user}}</h4>
+                        <div class="earn-points"><img src="{% static 'users/images/Dollar.svg' %}" alt="">Refferal Link : <span
+                            style="color: blue;"><a>{{ request.META.HTTP_HOST }}/{{"reffral_signup"}}/{{customer_details.refferal_code}}</a></span>
+                        </div>
+                        <div><br>
+                            <span class="earn-points">Total {{refferd_users_count}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-4">
+                    <div class="left-side-tabs">
+                        <div class="dashboard-left-links">
+                            <a href="{% url 'user_dashboard' %}" class="user-item"><i
+                                    class="uil uil-apps"></i>Overview</a>
+                            <a href="{% url 'user_profile' request.user.id %}" class="user-item"><i
+                                    class="uil uil-apps"></i>Profile</a>
+                            <a href="{% url 'my_orders' %}" class="user-item"><i class="uil uil-box"></i>My
+                                Orders</a>
+                            <a href="{% url 'rewards' %}" class="user-item"><i class="uil uil-gift"></i>My
+                                Rewards</a>
+                            <a href="{% url 'wallet' %}" class="user-item active"><i class="uil uil-wallet"></i>My
+                                Wallet</a>
+                            <a href="{% url 'wishlist' %}" class="user-item"><i class="uil uil-heart"></i>Shopping
+                                Wishlist</a>
+                            <a href="{% url 'my_address' %}" class="user-item"><i class="uil uil-location-point"></i>My
+                                Address</a>
+                            <a href="{% url 'logout' %}" class="user-item"><i class="uil uil-exit"></i>Logout</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-9 col-md-8">
+                    <div class="dashboard-right">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="main-title-tab">
+                                    <h4><i class="uil uil-wallet"></i>My Wallet</h4>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-12">
+                                <div class="pdpt-bg">
+                                    <div class="reward-body-dtt">
+                                        <div class="reward-img-icon">
+                                            <img src="{% static 'users/images/money.svg' %}" alt="">
+                                        </div>
+                                        <span class="rewrd-title">My Balance</span>
+                                        <h4 class="cashbk-price">₹ {{wallet_amount}}</h4>
+                                        <span class="date-reward">Added : 8 May 2020</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-12">
+                                <div class="pdpt-bg">
+                                    <div class="gambo-body-cash">
+                                        <div class="reward-img-icon">
+                                            <img class="rotate-img" src="{% static 'users/images/business.svg' %}"
+                                                alt="">
+                                        </div>
+                                        <span class="rewrd-title">Gambo Cashback Blance</span>
+                                        <h4 class="cashbk-price">₹ {{cashback_amount}}</h4>
+                                        <p>100% of thiscan be used for your next order.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-12 col-md-12">
+                                <div class="pdpt-bg">
+                                    <div class="pdpt-title">
+                                        <h4>Active Offers</h4>
+                                    </div>
+                                    <div class="active-offers-body">
+                                        <div class="table-responsive">
+                                            <table class="table ucp-table earning__table">
+                                                <thead class="thead-s">
+                                                    <tr>
+                                                        <th scope="col">Offers</th>
+                                                        <th scope="col">Offer Code</th>
+                                                        <th scope="col">Expires Date</th>
+                                                        <th scope="col">Status</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>15%</td>
+                                                        <td>GAMBOCOUP15</td>
+                                                        <td>31 May 2020</td>
+                                                        <td><b class="offer_active">Activated</b></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-12">
+                                <div class="pdpt-bg">
+                                    <div class="pdpt-title">
+                                        <h4>Add Balance</h4>
+                                    </div>
+                                    <div class="add-cash-body">
+                                        <form method="post">
+                                            {% csrf_token %}
+                                            <div class="row">
+                                                <div class="col-lg-12 col-md-12">
+                                                    <div class="form-group mt-1">
+                                                        <label class="control-label">Add Balance*</label>
+                                                        <div class="ui search focus">
+                                                            <div class="ui left icon input swdh11 swdh19">
+                                                                <input class="prompt srch_explore" type="number"
+                                                                    name="addbalance" min="0" maxlength="4" placeholder="₹0" onkeydown="return event.keyCode !== 69 && event.keyCode !== 189" required>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <button class="next-btn16 hover-btn mt-3" type="submit">Add Balance</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-12">
+                                <div class="pdpt-bg">
+                                    <div class="pdpt-title">
+                                        <h4>History</h4>
+                                    </div>
+                                    <div class="history-body scrollstyle_4">
+                                        {% for transaction in transactions %}
+                                        <ul class="history-list">
+                                            <li>
+                                                <div class="purchase-history">
+                                                    <div class="purchase-history-left">
+                                                        <h4>{{transaction.transaction_name}}</h4>
+                                                        <p>Transaction ID <ins>{{transaction.transaction_id}}</ins></p>
+                                                        <span>{{transaction.date}}, {{transaction.time}}</span>
+                                                        <h1></h1>
+                                                    </div>
+                                                    {% if transaction.trasaction_type == "Credit" %}
+                                                    <div class="purchase-history-right">
+                                                        <span>+ ₹ {{transaction.credit_amount}}</span>
+                                                        <a href="#">View</a>
+                                                    </div>
+                                                    {% else %}
+                                                    <div class="purchase-history-right">
+                                                        <span>- ₹ {{transaction.debit_amount}}</span>
+                                                        <a href="#">View</a>
+                                                    </div>
+                                                    {% endif %}
+
+                                                </div>
+                                            </li>
+                                        </ul>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

@@ -1,0 +1,104 @@
+﻿{% extends 'users/base.html' %}
+{% load static %}
+{% block content %}
+{% block title %}{{products.product_name}}{% endblock %}
+
+<div class="all-product-grid">
+    <div class="container" style="padding: 100;" >
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="product-dt-view">
+                    <div class="row">
+                        <div class="col-lg-4 col-md-4">
+                            <div id="sync1" class="owl-carousel owl-theme">
+                                {% for images in extra_images %}
+                                <div class="item">
+                                    <img src="{{images.ImageURL}}" class="drift-demo-trigger" data-zoom="{{images.ImageURL}}" alt="">
+                                </div>
+                                {% endfor %}
+                            </div>
+
+                            <div id="sync2" class="owl-carousel owl-theme">
+                                {% for images in extra_images %}
+                                <div class="item">
+                                    <img src="{{images.ImageURL}}" class="drift-demo-trigger" data-zoom="{{images.ImageURL}}" alt="">
+                                </div>
+                                {% endfor %}
+                            </div>
+                            
+                        </div>
+                        <div class="col-lg-8 col-md-8">
+                            <div class="product-dt-right details">
+                                <h2>{{products.product_name}}</h2>
+                                <div class="no-stock">
+                                    <p class="stock-qty">Available<span>(Instock)</span></p>
+                                </div>
+                                <p class="pp-descp">{{products.description}}
+                                </p>
+                                <div class="product-group-dt">
+                                    <ul>
+                                        <li>
+                                            <div class="main-price ">MRP Price<span>₹ {{products.price|floatformat:2}}</span></div>
+                                        </li>
+                                        {% if products.offer_price == 0 %}
+
+                                        {% else %}
+                                        <span><del>
+                                            ₹
+                                            {{products.offer_price}}
+                                        </del>
+
+                                        </span>
+                                        {% endif %}
+                                    </ul>
+
+                                    <ul class="ordr-crt-share">
+                                        <li>
+                                            <button data-product="{{products.id}}" data-action="add" class="add-cart-btn hover-btn add-btn update-cart"><i class="uil uil-shopping-cart-alt"></i>Add to Cart</button>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="pdp-details">
+                                    <ul>
+                                        <li>
+                                            <div class="pdp-group-dt">
+                                                <div class="pdp-icon"><i class="uil uil-usd-circle"></i></div>
+                                                <div class="pdp-text-dt">
+                                                    <span>Lowest Price Guaranteed</span>
+                                                    <p>Get difference refunded if you find it cheaper anywhere
+                                                        else.</p>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="pdp-group-dt">
+                                                <div class="pdp-icon"><i class="uil uil-cloud-redo"></i></div>
+                                                <div class="pdp-text-dt">
+                                                    <span>Easy Returns & Refunds</span>
+                                                    <p>Return products at doorstep and get refund in seconds.
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://awik.io/demo/webshop-zoom/Drift.min.js"></script>
+<script>
+    new Drift(document.querySelector('.drift-demo-trigger'), {
+        paneContainer: document.querySelector('.details'),
+        inlinePane: 769,
+        inlineOffsetY: -85,
+        containInline: true,
+        hoverBoundingBox: true
+    });
+</script>
+{% endblock content %}

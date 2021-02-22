@@ -1,0 +1,66 @@
+{% extends 'users/base.html' %}
+{% load static %}
+{% block content %}
+{% block title %}{{category.category_name}}{% endblock %}
+<div class="wrapper">
+    <div class="all-product-grid">
+        <div class="container">
+            <div class="product-list-view">
+                <div class="row">
+                    {% for products in product %}
+                    <div class="col-lg-3 col-md-6">
+                        <div class="product-item mb-30">
+                            <a href="{% url 'product_view' products.id %}" class="product-img">
+                                <img src="{{products.ImageURL}}" alt="">
+                                <div class="product-absolute-options">
+                                    {% if products.offer_percentage == 0 %}
+                                        
+                                    {% else %}
+                                    <span class="offer-badge-1">{{products.offer_percentage}}% off</span>
+                                    {% endif %}
+
+                                    <span data-product="{{products.id}}" data-action="add_wishlist"
+                                        class="like-icon update-cart" title="wishlist"></span>
+                                </div>
+                            </a>
+                            <div class="product-text-dt">
+                                <p>Available<span>(In Stock)</span></p>
+                                <h4>{{products.product_name}}</h4>
+                                <div class="product-price">₹ {{products.price}}
+
+                       
+                                        {% if products.offer_price == 0 %}
+
+                                        {% else %}
+                                        <span>
+                                            ₹
+                                            {{products.offer_price}}
+                                        </span>
+                                        {% endif %}
+                                
+
+                                </div>
+                                <div class="qty-cart">
+                                    <div class="quantity buttons_added">
+                                        <input type="button" value="-" class="minus minus-btn">
+                                        <input type="number" step="1" name="quantity" value="1"
+                                            class="input-text qty text">
+                                        <input type="button" value="+" class="plus plus-btn">
+                                    </div>
+                                    <span id="showToast{{products.id}}" data-product="{{products.id}}" data-action="add"
+                                        onclick="showmsg('{{products.id}}')" class=" cart-icon add-btn update-cart"><i
+                                            class="uil uil-shopping-cart-alt"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+

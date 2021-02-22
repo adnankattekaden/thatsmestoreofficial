@@ -1,0 +1,39 @@
+{% extends 'vendor/base.html' %}
+{% load static %}
+{% block title %}Return Product Reports{% endblock %}
+{% block content %}
+
+<h1>Product Return Report</h1>
+<div>
+    <form method="post">
+        {% csrf_token %}
+        <h3>From</h3>
+        <input type="date" id="start_date" name="start_date" required><h3>TO</h3>
+        <input type="date" id="end_date" name="end_date" required>
+        <button type="submit">Submit</button>
+    </form>
+</div>
+
+<table class="table table-striped">
+    <thead>
+        
+        <tr>
+            <th scope="col">Date</th>
+            <th scope="col">Total Orders</th>
+            <th scope="col">Total Amount</th>
+        </tr>
+        
+    </thead>
+    <tbody>
+
+        {% for date,order in dict.items %}
+        <tr>
+            <td>{{date}}</td>
+            <td>{{order.count}}</td>
+            <td>${{order.total}}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock content %}

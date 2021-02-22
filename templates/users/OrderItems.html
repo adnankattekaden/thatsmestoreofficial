@@ -1,0 +1,96 @@
+{% extends 'users/base.html' %}
+{% load static %}
+{% block content %}
+{% block title %}Order Items{% endblock %}
+<div class="wrapper">
+    <div class="dashboard-group">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="user-dt">
+
+                        {% if user_profile.ImageURL == '' %}
+                        <div class="user-img">
+                            <img src="{% static './users/images/avatar/img-5.jpg' %}" alt="">
+                        </div>
+                        {% else %}
+                        <div class="user-img">
+                            <img src="{{user_profile.ImageURL}}" alt="">
+                        </div>
+                        {% endif %}
+
+                        <h4>{{request.user}}</h4>
+                        <div class="earn-points"><img src="{% static 'users/images/Dollar.svg' %}" alt="">Refferal Link : <span
+                            style="color: blue;"><a>{{ request.META.HTTP_HOST }}/{{"reffral_signup"}}/{{customer_details.refferal_code}}</a></span>
+                        </div>
+                        <div><br>
+                            <span class="earn-points">Total {{refferd_users_count}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-4">
+                    <div class="left-side-tabs">
+                        <div class="dashboard-left-links">
+                            <a href="{% url 'user_dashboard' %}" class="user-item active"><i
+                                    class="uil uil-apps"></i>Overview</a>
+                            <a href="{% url 'user_profile' request.user.id %}" class="user-item"><i
+                                    class="uil uil-apps"></i>Profile</a>
+                            <a href="{% url 'my_orders' %}" class="user-item"><i class="uil uil-box"></i>My
+                                Orders</a>
+                            <a href="{% url 'rewards' %}" class="user-item"><i class="uil uil-gift"></i>My
+                                Rewards</a>
+                            <a href="{% url 'wallet' %}" class="user-item"><i class="uil uil-wallet"></i>My
+                                Wallet</a>
+                            <a href="{% url 'wishlist' %}" class="user-item"><i class="uil uil-heart"></i>Shopping
+                                Wishlist</a>
+                            <a href="{% url 'my_address' %}" class="user-item"><i class="uil uil-location-point"></i>My
+                                Address</a>
+                            <a href="{% url 'logout' %}" class="user-item"><i class="uil uil-exit"></i>Logout</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-9 col-md-8">
+                    <div class="dashboard-right">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="main-title-tab">
+                                    <h4><i class="uil uil-box"></i>My Order Items</h4>
+                                </div>
+                            </div>
+                            <div class="col-lg-12 col-md-12">
+                                <div class="pdpt-bg">
+                                    <div class="wishlist-body-dtt">
+                                        {% for order in order_items %}
+                                        <div class="cart-item">
+                                            <div class="cart-product-img">
+                                                <img src="{{order.product.ImageURL}}" alt="">
+                                                <div class="offer-badge">4% OFF</div>
+                                            </div>
+                                            <div class="cart-text">
+                                                <h4>{{order.product.product_name}}</h4>
+                                                <div class="cart-item-price">₹ {{order.product.price}} <span>₹ 18</span></div>
+                                            </div>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock content %}

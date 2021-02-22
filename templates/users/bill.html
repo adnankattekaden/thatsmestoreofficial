@@ -1,0 +1,152 @@
+﻿{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, shrink-to-fit=9">
+    <meta name="description" content="Gambolthemes">
+    <meta name="author" content="Gambolthemes">
+    <title>Bill Invoice</title>
+
+
+    <link rel="icon" type="image/png" href="{% static './users/images/fav.png' %}">
+
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&amp;display=swap"
+        rel="stylesheet">
+    <link href=" {% static './users/vendor/unicons-2.0.1/css/unicons.css' %} " rel='stylesheet'>
+    <link href=" {% static './users/css/style.css' %} " rel="stylesheet">
+    <link href=" {% static './users/css/responsive.css' %}" rel="stylesheet">
+    <link href="{% static './users/css/night-mode.css' %}" rel="stylesheet">
+    <link href="{% static './users/vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet">
+    <link href="{% static './users/vendor/OwlCarousel/assets/owl.carousel.css' %}" rel="stylesheet">
+    <link href="{% static './users/vendor/OwlCarousel/assets/owl.theme.default.min.css' %}" rel="stylesheet">
+    <link href="{% static './users/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+
+    <link rel="stylesheet" type="text/css" href="{% static './users/vendor/semantic/semantic.min.css' %}">
+</head>
+
+<body>
+    <header class="header clearfix">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="top-header-group">
+                        <div class="top-header">
+                            <div class="res_main_logo">
+                                <a href="index.html"><img src="images/dark-logo-1.svg" alt=""></a>
+                            </div>
+                            <div class="main_logo ml-0" id="logo">
+                                <a href="index.html"><img src="images/logo.svg" alt=""></a>
+                                <a href="index.html"><img class="logo-inverse" src="images/dark-logo.svg" alt=""></a>
+                            </div>
+                            <div class="header_right">
+                                <a href="{% url 'user_homepage' %}" class="report-btn hover-btn">Thats Me Store</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+
+    <div class="bill-dt-bg">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="bill-detail">
+                        <div class="bill-dt-step">
+                            <div class="bill-title">
+                                <h4>Items</h4>
+                            </div>
+
+                            <div class="bill-descp">
+                                <div class="itm-ttl">{{order_items_count}} Items</div>
+                                {% for items in order_items %}
+                                <div class="cart-item">
+                                    <div class="cart-text">
+                                        <h4>{{items.product.product_name}}</h4>
+                                        <div class="cart-item-price">₹ {{items.product.price}} <span>₹ 18</span></div><br>
+                                        <div class="cart-item-price">x {{items.quantity}}</div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                           
+                        </div>
+                        <div class="bill-dt-step">
+                            <div class="bill-title">
+                                <h4>Delivery Address</h4>
+                            </div>
+                            <div class="bill-descp">
+                                <div class="itm-ttl">Home</div>
+                                {% for address in shipping_address %}
+                                <p class="bill-address">
+                                   {{address.address}},<br>{{address.city}} P.O,<br>{{address.state}},<br>{{address.country}},<br>{{address.zipcode}},<br>{{address.mobilenumber}}
+                                </p>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="bill-dt-step">
+                            <div class="bill-title">
+                                <h4>Payment</h4>
+                            </div>
+                            <div class="bill-descp">
+                                <div class="total-checkout-group p-0 border-top-0">
+                                    <div class="cart-total-dil">
+                                        <h4>Subtotal</h4>
+                                        <span>₹ {{orders.get_cart_total}}</span>
+                                    </div>
+                                    <div class="cart-total-dil pt-3">
+                                        <h4>Delivery Charges</h4>
+                                        <span>Free</span>
+                                    </div>
+                                    <div class="cart-total-dil pt-3">
+                                        <h4>Discounted</h4>
+                                        <span>- {{orders.discounted}}</span>
+                                    </div>
+                                </div>
+                                <div class="main-total-cart pl-0 pr-0 pb-0 border-bottom-0">
+                                    <h2>Total</h2>
+                                    <span>₹ {{orders.get_cart_total}}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bill-dt-step">
+                            <div class="bill-title">
+                                <h4>Payment Option</h4>
+                            </div>
+                            <div class="bill-descp">
+                                {% for address in shipping_address %}
+                                <p class="bill-dt-sl"><span class="dlr-ttl25 mr-1"><i
+                                            class="uil uil-check-circle"></i></span>{{address.payment_status}}</p>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="bill-dt-step">
+                            <div class="bill-bottom">
+                                <div class="thnk-ordr">Thanks for Ordering</div>
+                                <a class="print-btn hover-btn" href="javascript:window.print();">Print</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="{% static 'users/js/jquery-3.3.1.min.js' %}"></script>
+    <script src="{% static 'users/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'users/vendor/OwlCarousel/owl.carousel.js' %}"></script>
+    <script src="{% static 'users/vendor/semantic/semantic.min.js' %}"></script>
+    <script src="{% static 'users/js/jquery.countdown.min.js' %}"></script>
+    <script src="{% static 'users/js/custom.js' %}"></script>
+    <script src="{% static 'users/js/product.thumbnail.slider.js' %}"></script>
+    <script src="{% static 'users/js/offset_overlay.js' %}"></script>
+    <script src="{% static 'users/js/night-mode.js' %}"></script>
+</body>
+
+</html>

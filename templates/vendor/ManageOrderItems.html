@@ -1,0 +1,28 @@
+{% extends 'vendor/base.html' %}
+{% load static %}
+{% block title %}Manage Order Items{% endblock %}
+{% block content %}
+<div class="col-lg-12">
+  <h1>Manage Order Items</h1>
+    <table class="table">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Product Name</th>
+            <th scope="col">Product Image</th>
+            <th scope="col">Price</th>
+          </tr>
+        </thead>
+        <tbody>
+            {% for item in order_items %}
+          <tr>
+            <th scope="row">1</th>
+            <td>{{item.product.product_name}}</td>
+            <td><img style="height: 60px; width: 70px;" class="row-image" src="{{item.product.ImageURL}}"></td>
+            <td>{{item.product.price}}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+  </div>
+  {% endblock content %}

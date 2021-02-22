@@ -1,0 +1,91 @@
+{% extends 'vendor/base.html' %}
+{% load static %}
+{% block title %}Manage Product{% endblock %}
+{% block content %}
+
+<style>
+    #myInput {
+      background-image: url('/css/searchicon.png');
+      background-position: 10px 10px;
+      background-repeat: no-repeat;
+      width: 100%;
+      font-size: 16px;
+      padding: 12px 20px 12px 40px;
+      border: 1px solid #ddd;
+      margin-bottom: 12px;
+    }
+  </style>
+  
+  
+  <div class="msg">
+    {% for i in messages %}
+    <h4 style="text-align: center; color: red;">
+      {{i}}</h4>
+    {% endfor %}
+  </div>
+  
+  <div>
+    <input type="text" id="myInput" class="border border-danger rounded-pill" style="width: 20%;" onkeyup="myFunction()"
+      placeholder="Search for names.." title="Type in a name">
+    <a href="{% url 'create_product' %}"><input type="button" class="btn btn-info float-right mr-3 mb-3"
+        value="Create"></a>
+
+  </div>
+
+  <div class="tables">
+
+    <table class="table" id="myTable">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Product Name</th>
+          <th scope="col">Price</th>
+          <th scope="col">Stock</th>
+          <th scope="col">Description</th>
+          <th scope="col">Category</th>
+          <th scope="col">Image</th>
+          <th scope="col">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for product in products%}
+        <tr>
+          <th scope="row">{{product.id}}</th>
+          <td>{{product.product_name}}</td>
+          <td>{{product.price}}</td>
+          <td></td>
+          <td style="width: 30%;">{{product.description}}</td>
+          <td>{{product.category.category_name}}</td>
+          <td><img style="height: 60px; width: 70px;" class="row-image" src="{{product.ImageURL}}"></td>
+          <td><a href="{% url 'edit_product' product.id %}"><input type="button" class="btn btn-info"
+                value="edit"></a>&nbsp;&nbsp;<a href="{% url 'delete_product' product.id %}"><input type="button"
+                class="btn btn-primary" onclick="return confirm('Are You Sure Want To Delete')" value="Delete"></td></a>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  
+  
+  <script>
+    function myFunction() {
+      var input, filter, table, tr, td, i, txtValue;
+      input = document.getElementById("myInput");
+      filter = input.value.toUpperCase();
+      table = document.getElementById("myTable");
+      tr = table.getElementsByTagName("tr");
+      for (i = 0; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName("td")[0];
+        if (td) {
+          txtValue = td.textContent || td.innerText;
+          if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            tr[i].style.display = "";
+          } else {
+            tr[i].style.display = "none";
+          }
+        }
+      }
+    }
+  </script>
+
+{% endblock content %}

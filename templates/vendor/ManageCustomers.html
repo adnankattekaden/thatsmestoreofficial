@@ -1,0 +1,97 @@
+{% extends 'vendor/base.html' %}
+{% load static %}
+{% block title %}Manage Customer{% endblock %}
+{% block content %}
+
+<style>
+  #myInput {
+    background-image: url('/css/searchicon.png');
+    background-position: 10px 10px;
+    background-repeat: no-repeat;
+    width: 100%;
+    font-size: 16px;
+    padding: 12px 20px 12px 40px;
+    border: 1px solid #ddd;
+    margin-bottom: 12px;
+  }
+</style>
+
+
+<div class="msg">
+  {% for i in messages %}
+  <h4 style="text-align: center; color: red;">
+    {{i}}</h4>
+  {% endfor %}
+</div>
+
+
+<div>
+  <input type="text" id="myInput" class="border border-danger rounded-pill" style="width: 20%;" onkeyup="myFunction()"
+    placeholder="Search for names.." title="Type in a name">
+  <a href="{% url 'create_customer' %}"><input type="button" class="btn btn-info float-right mr-3 mb-3"
+      value="Create"></a>
+</div>
+
+<div class="tables">
+  <table class="table" id="myTable">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">First Name</th>
+        <th scope="col">Last Name</th>
+        <th scope="col">username</th>
+        <th scope="col">Email</th>
+        <th scope="col">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for customer in customers %}
+      <tr>
+        <th scope="row">{{i.id}}</th>
+        <td>{{customer.first_name}}</td>
+        <td>{{customer.last_name}}</td>
+        <td>{{customer.username}}</td>
+        <td>{{customer.email}}</td>
+        <td>
+          <a href="{% url 'update_customer' customer.id %}"><input type="button" class="btn btn-info"
+              value="edit"></a>&nbsp;&nbsp;
+          <a href="{% url 'delete_customer' customer.id %}"><input type="button" class="btn btn-primary"
+              onclick="return confirm('Are You Sure Want To Delete')" value="Delete"></a>
+          {% if customer.is_active == False%}
+          <a href="{% url 'activate_customer' customer.id %}">&nbsp;<input type="button" class="btn btn-success" value="UnBlock"
+              onclick="return confirm('Are You Sure Want To UnBlock This User')"></a>
+          {% else %}
+          <a href="{% url 'block_customer' customer.id %}">&nbsp;<input type="button" class="btn btn-danger" value="Block"
+              onclick="return confirm('Are You Sure Want To Block This User')"></a>
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+
+
+<script>
+  function myFunction() {
+    var input, filter, table, tr, td, i, txtValue;
+    input = document.getElementById("myInput");
+    filter = input.value.toUpperCase();
+    table = document.getElementById("myTable");
+    tr = table.getElementsByTagName("tr");
+    for (i = 0; i < tr.length; i++) {
+      td = tr[i].getElementsByTagName("td")[0];
+      if (td) {
+        txtValue = td.textContent || td.innerText;
+        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+          tr[i].style.display = "";
+        } else {
+          tr[i].style.display = "none";
+        }
+      }
+    }
+  }
+</script>
+
+{% endblock content %}

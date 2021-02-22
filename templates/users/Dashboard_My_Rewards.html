@@ -1,0 +1,235 @@
+﻿{% extends 'users/base.html' %}
+{% load static %}
+{% block content %}
+{% block title %}My Rewards{% endblock %}
+
+<style>
+    .scratch {
+        width: 100%;
+        height: 100vh;
+        background-size: cover;
+        background-attachment: fixed;
+        overflow: hidden;
+    }
+
+    #erase {
+        position: absolute;
+        display: block;
+        width: 95px;
+        height: 95px;
+        border-radius: 50%;
+        /* background: url(./result.png); */
+        background-color: brown;
+        background-size: cover;
+        background-attachment: fixed;
+        pointer-events: none;
+    }
+</style>
+
+<div class="wrapper">
+    <div class="dashboard-group">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="user-dt">
+
+                        {% if user_profile.ImageURL == '' %}
+                        <div class="user-img">
+                            <img src="{% static './users/images/avatar/img-5.jpg' %}" alt="">
+                        </div>
+                        {% else %}
+                        <div class="user-img">
+                            <img src="{{user_profile.ImageURL}}" alt="">
+                        </div>
+                        {% endif %}
+
+                        <h4>{{request.user}}</h4>
+                        <div class="earn-points"><img src="{% static 'users/images/Dollar.svg' %}" alt="">Refferal Link
+                            : <span style="color: blue;"><a>{{ request.META.HTTP_HOST }}/{{"reffral_signup"}}/{{customer_details.refferal_code}}</a></span>
+                        </div>
+                        <div><br>
+                            <span class="earn-points">Total {{refferd_users_count}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-4">
+                    <div class="left-side-tabs">
+                        <div class="dashboard-left-links">
+                            <a href="{% url 'user_dashboard' %}" class="user-item"><i
+                                    class="uil uil-apps"></i>Overview</a>
+                            <a href="{% url 'user_profile' request.user.id %}" class="user-item"><i
+                                    class="uil uil-apps"></i>Profile</a>
+                            <a href="{% url 'my_orders' %}" class="user-item"><i class="uil uil-box"></i>My
+                                Orders</a>
+                            <a href="{% url 'rewards' %}" class="user-item active"><i class="uil uil-gift"></i>My
+                                Rewards</a>
+                            <a href="{% url 'wallet' %}" class="user-item"><i class="uil uil-wallet"></i>My
+                                Wallet</a>
+                            <a href="{% url 'wishlist' %}" class="user-item"><i class="uil uil-heart"></i>Shopping
+                                Wishlist</a>
+                            <a href="{% url 'my_address' %}" class="user-item"><i class="uil uil-location-point"></i>My
+                                Address</a>
+                            <a href="{% url 'logout' %}" class="user-item"><i class="uil uil-exit"></i>Logout</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-9 col-md-8">
+                    <div class="dashboard-right">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="main-title-tab">
+                                    <h4><i class="uil uil-gift"></i>My Rewards</h4>
+                                </div>
+                            </div>
+                            <div class="col-lg-12 col-md-12">
+                                <div class="pdpt-bg">
+                                    <ul class="reward-body-all">
+                                        <li>
+                                            <div class="total-rewards">
+                                                <div class="tt-icon"><i class="uil uil-money-withdraw"></i></div>
+                                                <span>Cashbacks</span>
+                                                <h4>$15</h4>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="total-rewards">
+                                                <div class="tt-icon"><i class="uil uil-percentage"></i></div>
+                                                <span>Offers</span>
+                                                <h4>$5</h4>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="total-rewards">
+                                                <div class="tt-icon"><i class="uil uil-tag-alt"></i></div>
+                                                <span>Coupons</span>
+                                                <h4>2</h4>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4 col-md-12" style="position: relative;">
+
+                                <div class="pdpt-bg" style="position: relative;">
+                                    <div class="reward-body-dtt">
+                                        <div class="reward-img-icon">
+                                            <img src="{% static 'users/images/gift.svg' %}" alt="">
+                                        </div>
+                                        <span class="rewrd-title">Cashback Won</span>
+                                        <h4 class="cashbk-price">$2</h4>
+                                        <span class="date-reward">12 May 2020</span>
+                                    </div>
+                                </div>
+
+                                <div id="erase" class="scratch-erase"
+                                    style="position: absolute; top: 23px; left: 17px;">
+                                    <img id="eraseImg" style="width: 19em;" src="{% static './users/images/back.png' %}" alt="">
+                                </div>
+
+                            </div>
+
+
+                            <!-- <div class="col-lg-4 col-md-12">
+                                <div class="pdpt-bg rewards-coupns">
+                                    <div class="reward-body-dtt">
+                                        <div class="reward-img-icon">
+                                            <img src="{% static 'users/images/discount.svg' %}" alt="">
+                                        </div>
+                                        <span class="rewrd-title">Offer</span>
+                                        <h4 class="cashbk-price">Get 25% Cashback</h4>
+                                        <span class="date-reward">Expires on : 31st May</span>
+                                    </div>
+                                    <div class="top-coup-code" title="Coupon Code">Gambocoup25</div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-12">
+                                <div class="pdpt-bg rewards-coupns">
+                                    <div class="reward-body-dtt">
+                                        <div class="reward-img-icon">
+                                            <img src="{% static 'users/images/coupon.svg' %}" alt="">
+                                        </div>
+                                        <span class="rewrd-title">Coupon Won</span>
+                                        <h4 class="cashbk-price">Get 10% Cashback</h4>
+                                        <span class="date-reward">Expires on : 25th May</span>
+                                    </div>
+                                    <div class="top-coup-code" title="Coupon Code">Gambocoup10</div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-12">
+                                <div class="pdpt-bg rewards-coupns">
+                                    <div class="reward-body-dtt">
+                                        <div class="reward-img-icon">
+                                            <img src="{% static 'users/images/discount.svg' %}" alt="">
+                                        </div>
+                                        <span class="rewrd-title">Offer</span>
+                                        <h4 class="cashbk-price">Get 15% Cashback</h4>
+                                        <span class="date-reward">Expired on : 5th May</span>
+                                    </div>
+                                    <div class="top-coup-code" title="Coupon Code">Gambocoup15</div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-12">
+                                <div class="pdpt-bg rewards-coupns">
+                                    <div class="reward-body-dtt">
+                                        <div class="reward-img-icon">
+                                            <img src="{% static 'users/images/coupon.svg' %}" alt="">
+                                        </div>
+                                        <span class="rewrd-title">Coupon Won</span>
+                                        <h4 class="cashbk-price">Get 5% Cashback</h4>
+                                        <span class="date-reward">Expires on : 20th May</span>
+                                    </div>
+                                    <div class="top-coup-code" title="Coupon Code">Gambocoup5</div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-12">
+                                <div class="pdpt-bg">
+                                    <div class="reward-body-dtt">
+                                        <div class="reward-img-icon">
+                                            <img src="{% static 'users/images/gift.svg' %}" alt="">
+                                        </div>
+                                        <span class="rewrd-title">Cashback Won</span>
+                                        <h4 class="cashbk-price">$1</h4>
+                                        <span class="date-reward">3 May 2020</span>
+                                    </div>
+                                </div>
+                            </div> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- 
+<script type="text/javascript">
+const erase = document.getElementById('eraseImg');
+console.log(erase);
+    erase.addEventListener('mousemove', function (e) {
+        console.log('hello');
+        console.log(e.movementX);
+        
+    });
+    </script> -->
+
+<!-- <script type="text/javascript">
+document.addEventListener('mousemove', function (e) {
+    console.log('hello');
+    const wrap = document.querySelector('scratch-erase');
+    const erase = document.getElementById('erase');
+    erase.style.left = e.offsetX + 'px';
+    erase.style.top = e.offsetY + 'px';
+    console.log(e.offsetX,e.offsetY);
+    // wrap.appendChild(erase)
+});
+</script> -->
+
+{% endblock content %}

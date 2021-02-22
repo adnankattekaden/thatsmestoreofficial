@@ -1,0 +1,38 @@
+{% extends 'vendor/base.html' %}
+{% load static %}
+{% block title %}Manage Offers{% endblock %}
+{% block content %}
+<div class="col-lg-12">
+  <h1>Manage Offers</h1>
+    <table class="table">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Offer Name</th>
+            <th scope="col">Offer Type</th>
+            <th scope="col">Offer Image</th>
+            <th scope="col">Discount</th>
+            <th scope="col">Status</th>
+            <th scope="col">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+            {% for offer in offers %}
+          <tr>
+            <th scope="row">{{offer.id}}</th>
+            <td>{{offer.offer_name}}</td>
+            <td>{{offer.offer_type}}</td>
+            <td><img style="height: 60px; width: 70px;" class="row-image" src="{{offer.ImageURL}}"></td>
+            <td>{{offer.discount_amount}}</td>
+            <td>{{offer.offer_status}}</td>
+            <td>
+                    <a href="{% url 'delete_offer' offer.id %}"><input type="button" class="btn btn-primary"
+                        onclick="return confirm('Are You Sure Want To Delete')" value="Delete"></a>
+              </td>
+          </tr>
+          {% endfor %}
+        
+        </tbody>
+      </table>
+  </div>
+  {% endblock content %}

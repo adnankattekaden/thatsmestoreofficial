@@ -1,0 +1,225 @@
+{% load static %}
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, shrink-to-fit=9">
+    <meta name="description" content="Gambolthemes">
+    <meta name="author" content="Gambolthemes">
+    <title>{% block title %} {% endblock %}|ThatsMeStore</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+
+    <link rel="icon" type="image/png" href="{% static './users/images/fav.png' %}">
+
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&amp;display=swap"
+        rel="stylesheet">
+    <link href=" {% static './users/vendor/unicons-2.0.1/css/unicons.css' %} " rel='stylesheet'>
+    <link href=" {% static './users/css/style.css' %} " rel="stylesheet">
+    <link href=" {% static './users/css/responsive.css' %}" rel="stylesheet">
+    <link href="{% static './users/css/night-mode.css' %}" rel="stylesheet">
+    <link href="{% static './users/vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet">
+    <link href="{% static './users/vendor/OwlCarousel/assets/owl.carousel.css' %}" rel="stylesheet">
+    <link href="{% static './users/vendor/OwlCarousel/assets/owl.theme.default.min.css' %}" rel="stylesheet">
+    <link href="{% static './users/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+
+    <link rel="stylesheet" type="text/css" href="{% static './users/vendor/semantic/semantic.min.css' %}">
+
+    <script type="text/javascript">
+        var user = '{{request.user}}'
+
+        function getToken(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        const csrftoken = getToken('csrftoken');
+
+        let cartItems = '{{items_count}}'
+
+    </script>
+
+</head>
+
+<body class="d-flex flex-column min-vh-100">
+
+
+    <header class="header clearfix">
+        <div class="top-header-group">
+            <div class="top-header">
+                <div class="res_main_logo">
+                    <a href="{% url 'user_homepage' %}"><img src="{% static 'users/images/dark-logo-1.svg' %}"
+                            alt=""></a>
+                </div>
+                <div class="main_logo" id="logo">
+                    <a href="{% url 'user_homepage' %}"><img src="{% static 'users/images/logo.svg' %}" alt=""></a>
+                    <a href="{% url 'user_homepage' %}"><img class="logo-inverse"
+                            src="{% static 'users/images/dark-logo.svg' %}" alt=""></a>
+                </div>
+
+                <div class="header_right">
+                    <ul>
+                        <li>
+                            <a href="{% url 'wishlist' %}" class="option_links" title="Wishlist"><i
+                                    class='uil uil-heart icon_wishlist'></i><span
+                                    class="noti_count1">{{wishlist_count}}</span></a>
+                        </li>
+                        {% if user.is_authenticated %}
+
+                        <li class="ui dropdown">
+                            <a href="#" class="opts_account">
+                                {% if user_profile.ImageURL == '' %}
+                                <img src="{% static './users/images/avatar/img-5.jpg' %}" alt="">
+                                {% else %}
+                                <img src="{{user_profile.ImageURL}}" alt="">
+                                {% endif %}
+                                <span class="user__name">{{request.user}}</span>
+                                <i class="uil uil-angle-down"></i>
+                            </a>
+                            <div class="menu dropdown_account">
+                                <div class="night_mode_switch__btn">
+                                    <a href="#" id="night-mode" class="btn-night-mode">
+                                        <i class="uil uil-moon"></i> Night mode
+                                        <span class="btn-night-mode-switch">
+                                            <span class="uk-switch-button"></span>
+                                        </span>
+                                    </a>
+                                </div>
+                                <a href="{% url 'user_dashboard' %}" class="item channel_item"><i
+                                        class="uil uil-apps icon__1"></i>Dashbaord</a>
+                                <a href="{% url 'my_orders' %}" class="item channel_item"><i
+                                        class="uil uil-box icon__1"></i>My Orders</a>
+                                <a href="{% url 'wishlist' %}" class="item channel_item"><i
+                                        class="uil uil-heart icon__1"></i>My Wishlist</a>
+                                <a href="{% url 'wallet' %}" class="item channel_item"><i
+                                        class="uil uil-usd-circle icon__1"></i>My Wallet</a>
+                                <a href="{% url 'my_address' %}" class="item channel_item"><i
+                                        class="uil uil-location-point icon__1"></i>My Address</a>
+                                <a href="{% url 'latest_offers' %}" class="item channel_item"><i
+                                        class="uil uil-gift icon__1"></i>Offers</a>
+                                <a href="{% url 'logout' %}" class="item channel_item"><i
+                                        class="uil uil-lock-alt icon__1"></i>Logout</a>
+                            </div>
+                        </li>
+
+
+                        {% endif %}
+
+                        {% if not user.is_authenticated %}
+                        <li>
+
+
+                            <a href="{% url 'login' %}" class="item channel_item"><i
+                                    class="uil uil-lock-alt icon__1"></i>Login</a>
+
+
+                        </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="sub-header-group">
+            <div class="sub-header">
+                <nav class="navbar navbar-expand-lg navbar-light py-3">
+                    <div class="container-fluid">
+                        <button class="navbar-toggler menu_toggle_btn" type="button"
+                            data-target="#navbarSupportedContent"><i class="uil uil-bars"></i></button>
+                        <div class="collapse navbar-collapse d-flex flex-column flex-lg-row flex-xl-row justify-content-lg-end bg-dark1 p-3 p-lg-0 mt1-5 mt-lg-0 mobileMenu"
+                            id="navbarSupportedContent">
+                            <ul class="navbar-nav main_nav align-self-stretch">
+                                <li class="nav-item"><a href="{% url 'user_homepage' %}" class="nav-link active"
+                                        title="Home">Home</a>
+                                </li>
+                                <li class="nav-item"><a href="{% url 'shopgrid' %}" class="nav-link new_item"
+                                        title="New Products">New Products</a></li>
+                                <li class="nav-item"><a href="{% url 'shopgrid' %}" class="nav-link"
+                                        title="Featured Products">Featured Products</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
+                <div class="catey__icon">
+                </div>
+                <div class="header_cart order-1">
+                    <a href="{% url 'view_cart' %}" class="cart__btn hover-btn" title="Cart"><i
+                            class="uil uil-shopping-cart-alt"></i><span>Cart</span><ins
+                            id="adnan">{{items_count}}</ins><i class="uil uil-angle-down"></i></a>
+                </div>
+
+            </div>
+        </div>
+
+        <div id="notifications" class="toast" style="position: absolute; top: 110px; right: 0;">
+            <div class="toast-header">
+                <i class="fas fa-bell"></i> &nbsp;
+                <strong class="mr-auto">Notification</strong>&nbsp;
+                <small>1 second ago</small>
+                <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="toast-body">
+                Item Was Added
+            </div>
+        </div>
+    </header>
+
+
+
+
+
+    {% block content %}
+    {% endblock content %}
+
+    <script>
+        function showmsg(id) {
+            document.getElementById('notifications').classList.remove('hidden')
+            $('.toast').toast('show');
+        }
+
+    </script>
+    <footer class="footer mt-auto">
+        <div class="footer-last-row">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="copyright-text">
+                            <i class="uil uil-copyright"></i>Copyright 2020 <b>Gambolthemes</b> . All rights reserved
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+    <script src="{% static 'users/js/cart.js' %}"></script>
+
+
+    <script src="{% static 'users/js/jquery-3.3.1.min.js' %}"></script>
+    <script src="{% static 'users/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'users/vendor/OwlCarousel/owl.carousel.js' %}"></script>
+    <script src="{% static 'users/vendor/semantic/semantic.min.js' %}"></script>
+    <script src="{% static 'users/js/jquery.countdown.min.js' %}"></script>
+    <script src="{% static 'users/js/custom.js' %}"></script>
+    <script src="{% static 'users/js/offset_overlay.js' %}"></script>
+    <script src="{% static 'users/js/night-mode.js' %}"></script>
+    <script src="{% static 'users/js/product.thumbnail.slider.js' %}"></script>
+
+</body>
+
+</html>

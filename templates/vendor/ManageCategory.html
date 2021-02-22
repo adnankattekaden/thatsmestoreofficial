@@ -1,0 +1,40 @@
+{% extends 'vendor/base.html' %}
+{% load static %}
+{% block title %}Manage Category{% endblock %}
+{% block content %}
+<div>
+      <a href="{% url 'create_category' %}"><input type="button" class="btn btn-info float-right mr-3 mb-3"
+        value="Create Category"></a>
+</div>
+
+<div class="msg">
+  {% for i in messages %}
+  <h4 style="text-align: center; color: red;">
+     {{i}}</h4>
+  {% endfor %}
+
+<table class="table">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Category</th>
+      <th scope="col">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for category in categories %}
+    <tr>
+      <th scope="row">{{category.id}}</th>
+      <td>{{category.category_name}}</td>
+      <td><a href="{% url 'edit_category' category.id %}"><input type="button" class="btn btn-info"
+        value="edit"></a>&nbsp;&nbsp;<a href="{% url 'delete_category' category.id %}"><input type="button"
+        class="btn btn-primary" onclick="return confirm('Are You Sure Want To Delete')" value="Delete"></td></a>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+
+
+
+{% endblock content %}

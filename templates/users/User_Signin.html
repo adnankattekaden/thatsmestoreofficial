@@ -1,0 +1,101 @@
+﻿{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, shrink-to-fit=9">
+    <meta name="description" content="Gambolthemes">
+    <meta name="author" content="Gambolthemes">
+    <title>Sign In</title>
+
+    <link rel="icon" type="image/png" href="images/fav.png">
+
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&amp;display=swap"
+        rel="stylesheet">
+    <link href="{% static '/users/vendor/unicons-2.0.1/css/unicons.css' %}"rel='stylesheet'>
+    <link href="{% static 'users/css/style.css' %}" rel="stylesheet">
+    <link href="{% static 'users/css/responsive.css' %}" rel="stylesheet">
+    <link href="{% static 'users/css/night-mode.css' %}" rel="stylesheet">
+    <link href="{% static 'users/css/step-wizard.css' %}" rel="stylesheet">
+
+    <link href="{% static 'users/vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet">
+    <link href="{% static 'users/vendor/OwlCarousel/assets/owl.carousel.css' %}" rel="stylesheet">
+    <link href="{% static 'users/vendor/OwlCarousel/assets/owl.theme.default.min.css' %}" rel="stylesheet">
+    <link href="{% static 'users/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{% static 'users/vendor/semantic/semantic.min.css' %}">
+</head>
+
+<body>
+    <div class="sign-inup">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-5">
+                    <div class="sign-form">
+                        <div class="sign-inner">
+                            <div class="sign-logo" id="logo">
+                                <a href="{% url 'login' %}"><img src="{% static 'users/images/logo.svg' %}" alt=""></a>
+                                <a href="{% url 'login' %}"><img class="logo-inverse"
+                                        src="{% static 'users/images/dark-logo.svg' %}" alt=""></a>
+                            </div>
+
+                            <div class="form-dt">
+                                <div class="form-inpts checout-address-step">
+                                    <form method="POST">
+                                        {% csrf_token %}
+                                        <div class="form-title">
+                                            <h6>Sign In</h6>
+                                            {% for message in messages %}
+                                            <span style="color: red;" id="message">{{message}}</span><br>
+                                            {% endfor %}
+                                        </div>
+                                        <div class="form-group pos_rel">
+                                            <input id="username" name="username" type="text" placeholder="User Name"
+                                                class="form-control lgn_input">
+                                            <i class="uil uil-envelope lgn_icon"></i>
+                                        </div>
+
+                                        <div class="form-group pos_rel">
+                                            <input id="password" name="password" type="password"
+                                                placeholder="Enter Password" class="form-control lgn_input">
+                                            <i class="uil uil-padlock lgn_icon"></i>
+                                        </div>
+
+                                        <button class="login-btn hover-btn" id="signin_Btn" type="submit">Sign In
+                                            Now</button>
+
+                                    </form>
+                                </div>
+                                <div class="password-forgor">
+                                    <a href="{% url 'mobile_login' %}">Login Via Mobile</a>
+                                </div>
+                                <div class="signup-link">
+                                    <p>Don't have an account? - <a href="{% url 'signup' %}">Sign Up Now</a></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="copyright-text text-center mt-3">
+                        <i class="uil uil-copyright"></i>Copyright 2020 <b>Gambolthemes</b> . All rights reserved
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script src="{% static 'users/js/jquery-3.3.1.min.js' %}"></script>
+    <script src="{% static 'users/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'users/vendor/OwlCarousel/owl.carousel.js' %}"></script>
+    <script src="{% static 'users/vendor/semantic/semantic.min.js' %}"></script>
+    <script src="{% static 'users/js/jquery.countdown.min.js' %}"></script>
+    <script src="{% static 'users/js/custom.js' %}"></script>
+    <script src="{% static 'users/js/product.thumbnail.slider.js' %}"></script>
+    <script src="{% static 'users/js/offset_overlay.js' %}"></script>
+    <script src="{% static 'users/js/night-mode.js' %}"></script>
+</body>
+
+
+</html>

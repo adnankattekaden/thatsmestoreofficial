@@ -1,0 +1,38 @@
+{% extends 'vendor/base.html' %}
+{% load static %}
+{% block title %}Manage Coupens{% endblock %}
+{% block content %}
+<div class="col-lg-12">
+  <h1>Manage Coupens</h1>
+    <table class="table">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Coupen Name</th>
+            <th scope="col">Coupen Code</th>
+            <th scope="col">Validity Starts</th>
+            <th scope="col">Validity Expires</th>
+            <th scope="col">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+            {% for coupen in coupens %}
+          <tr>
+            <th scope="row">{{coupen.id}}</th>
+            <td>{{coupen.coupen_name}}</td>
+            <td>{{coupen.coupen_code}}</td>
+            <td>{{coupen.validity_starts}}</td>
+            <td>{{coupen.validity_expire}}</td>
+            <td>
+                <a href="{% url 'edit_coupen' coupen.id %}"><input type="button" class="btn btn-info"
+                    value="edit"></a>&nbsp;&nbsp;
+                    <a href="{% url 'delete_coupen' coupen.id %}"><input type="button" class="btn btn-primary"
+                        onclick="return confirm('Are You Sure Want To Delete')" value="Delete"></a>
+              </td>
+          </tr>
+          {% endfor %}
+        
+        </tbody>
+      </table>
+  </div>
+  {% endblock content %}

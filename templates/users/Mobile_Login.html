@@ -1,0 +1,46 @@
+{% extends 'users/base.html' %}
+{% load static %}
+{% block content %}
+{% block title %}Mobile Login{% endblock %}
+<div class="sign-inup">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-5">
+                <div class="sign-form">
+                    <div class="sign-inner">
+                        <div class="sign-logo" id="logo">
+                            <a href="index.html"><img src="{% static './users/images/logo.svg' %}" alt=""></a>
+                            <a href="index.html"><img class="logo-inverse" src="{% static './users/images/dark-logo.svg' %}" alt=""></a>
+                        </div>
+                        <div class="form-dt">
+                            <div class="form-inpts checout-address-step">
+                                <form method="POST">
+                                    {% csrf_token %}
+
+                                    <div class="form-title">
+                                        <h6>Mobile Login</h6>
+                                    </div>
+
+                                    {% for message in messages %}
+                                    <span style="color: red;" id="message">{{message}}</span><br>
+                                    {% endfor %}
+
+                                    <div class="form-group pos_rel">
+                                        <input id="phone[number]" name="phone" type="text"
+                                            placeholder="Enter Phone Number" class="form-control lgn_input" required="">
+                                        <i class="uil uil-mobile-android-alt lgn_icon"></i>
+                                    </div>
+
+                                    <button class="login-btn hover-btn" type="submit">Sent Otp</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock content %}

@@ -1,0 +1,45 @@
+﻿{% extends 'users/base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="wrapper">
+    <div class="all-product-grid mb-14">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 col-md-12">
+                    <div class="default-title mt-4">
+                        <h2>Offers</h2>
+                        <img src="{% static 'users/images/line.svg' %}" alt="">
+                    </div>
+                </div>
+                {% for offer in offers %}
+                <div class="col-lg-4">
+                    {% if offer.offer_type == "single" %}
+                    <a href="{% url 'product_view' offer.product.id %}" class="offers-item">
+                        <div class="offer-img">
+                            <img src="{{offer.ImageURL}}" alt="">
+                        </div>
+                        <div class="offers-text">
+                            <h4>📢 {{offer.offer_name}}!</h4>
+                            <p>Up to {{offer.discount_amount}}% off</p>
+                        </div>
+                    </a>
+                    {% else %}
+                    <a href="{% url 'category' offer.category.id %}" class="offers-item">
+                        <div class="offer-img">
+                            <img src="{{offer.ImageURL}}" alt="">
+                        </div>
+                        <div class="offers-text">
+                            <h4>📢 {{offer.offer_name}}!</h4>
+                            <p>Up to {{offer.discount_amount}}% off</p>
+                        </div>
+                    </a>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

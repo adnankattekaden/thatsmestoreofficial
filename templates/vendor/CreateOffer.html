@@ -1,0 +1,117 @@
+{% extends 'vendor/base.html' %}
+{% load static %}
+{% block title %}Create Offer{% endblock %}
+{% block content %}
+<style>
+   .hidden {
+      display: none !important;
+   }
+</style>
+
+<div class="container">
+   <div class="row justify-content-center">
+      <div class="col-md-5">
+         <div class="card">
+            <h2 class="card-title text-center">Create Offer <a href="#"></a></h2>
+            <div class="card-body py-md-4">
+               <form method="POST" enctype="multipart/form-data">
+                  {% csrf_token %}
+                  <div class="msg">
+                     {% for i in messages %}
+                     <h4 style="text-align: center; color: red;">
+                        {{i}}</h4>
+                     {% endfor %}
+                  </div>
+
+
+
+                  <div class="form-group">
+                     <label class="col-form-label">Offer Type</label>
+                     <select class="offerType" name="offer_type">
+                        <option value="single">Single</option>
+                        <option value="category">Categories</option>
+                     </select>
+                  </div>
+
+
+                  <div id="offer_name" class="form-group ">
+                     <label class=" col-form-label">Offer Name</label>
+                     <input type="text" class="form-control" name="offer_name" placeholder="Offer Name" required>
+                  </div>
+
+                  <div id="discount_category" class="form-group hidden">
+                     <label class=" col-form-label">Product Catogery</label>
+                     <select type="text" name="category" class="form-control">
+                        {% for category in categories%}
+                        <option value="{{category.id}}">{{category.category_name}}</option>
+                        {% endfor %}
+                     </select>
+                  </div>
+
+                  <div id="productname" class="form-group hidden">
+                     <label class=" col-form-label">Product Name</label>
+                     <select type="text" name="product" class="form-control">
+                        {% for product in products%}
+                        <option value="{{product.id}}">{{product.product_name}}</option>
+                        {% endfor %}
+                     </select>
+                  </div>
+
+
+
+                  <div id="discount" class="form-group hidden">
+                     <input type="number" class="form-control" name="discount_amount" placeholder="Discount percentage"
+                        required>
+                  </div>
+
+                  <label for="Images">Images</label>
+                  <div id="images">
+                     <input type="file" id="myFile" name="images" required>
+                  </div>
+
+                  <label class=" col-form-label">Offer Start</label>
+                  <div class="form-group">
+                     <input type="date" id="offer_start" name="offer_start" required>
+                     <input type="time" id="time_start" name="time_start" min="01:00" max="12:00" required>
+                     
+                  </div>
+
+                  <label class=" col-form-label">Offer Ends</label>
+                  <div class="form-group">
+                     <input type="date" id="offer_ends" name="offer_ends" required>
+                     <input type="time" id="time_expiry" name="time_expiry" required>
+                  </div>
+
+                  <div class="d-flex flex-row align-items-center justify-content-between">
+                     <button class="btn btn-primary">Create Offer</button>
+                  </div>
+
+               </form>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+
+<script>
+   $(document).ready(function () {
+      $("select.offerType").change(function () {
+         var offersType = $(this).children("option:selected").val();
+         if (offersType == 'single') {
+            document.getElementById('discount').classList.remove('hidden')
+            document.getElementById('productname').classList.remove('hidden')
+            document.getElementById('discount').classList.remove('hidden')
+            document.getElementById('discount_category').classList.add('hidden')
+         } else {
+            document.getElementById('discount').classList.remove('hidden')
+            document.getElementById('discount_category').classList.remove('hidden')
+            document.getElementById('discount').classList.remove('hidden')
+            document.getElementById('productname').classList.add('hidden')
+
+         }
+      });
+   });
+</script>
+
+
+{% endblock content %}

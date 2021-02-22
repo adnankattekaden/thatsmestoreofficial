@@ -1,0 +1,131 @@
+{% extends 'vendor/base.html' %}
+{% load static %}
+{% block title %}Edit Category{% endblock %}
+{% block content %}
+
+
+<div class="container">
+   <div class="row justify-content-center">
+      <div class="col-md-5">
+         <div class="card">
+            <h2 class="card-title text-center">Update Category<a href="#"></a></h2>
+            <div class="card-body py-md-4">
+               <form method="POST" enctype="multipart/form-data">
+                  {% csrf_token %}
+                  <div class="msg">
+                     {% for i in messages %}
+                     <h4 style="text-align: center; color: red;">
+                        {{i}}</h4>
+                     {% endfor %}
+                  </div>
+
+                  <div class="form-group">
+                     <input type="text" class="form-control" id="category_name" name="category_name"
+                        placeholder="category" value="{{category.category_name}}" required>
+                  </div>
+
+                  <img class="pb-2" id="output" />
+
+                  <!-- button for adding img -->
+                  <div class="input-group form-group">
+                     <button type="button" class="btn btn-primary" id="img-button">Upload Image</button>
+                  </div>
+
+                  <!-- result of cropped img -->
+                  <img id="cropped" class="cropped" src="">
+
+                  <!-- hidden field -->
+                  <input class="d-none" type="file" id="add_image1">
+                  <textarea name="pro_img" class="d-none" id="imageBaseData"></textarea>
+                  <hr>
+                  <div class="d-flex flex-row align-items-center justify-content-between">
+                     <button class="btn btn-primary">Update Category</button>
+                  </div>
+               </form>
+
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+
+
+
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+   aria-hidden="true">
+   <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">Crop Image</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+               <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         <div class="modal-body">
+            <div class="box-2">
+               <div class="result"></div>
+            </div>
+         </div>
+         <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" id="load" class="btn save btn-primary">Save changes</button>
+         </div>
+      </div>
+   </div>
+</div>
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/0.8.1/cropper.min.js"></script>
+
+<script>
+
+   $("#img-button").click(function (e) {
+      $("#add_image1").click();
+   });
+
+   let result = document.querySelector('.result'),
+      save = document.querySelector('.save'),
+      cropped = document.querySelector('.cropped'),
+      upload = document.querySelector('#add_image1'),
+      cropper = '';
+
+   upload.addEventListener('change', (e) => {
+      if (e.target.files.length) {
+         // start file reader
+         const reader = new FileReader();
+         reader.onload = (e) => {
+            if (e.target.result) {
+               // create new image
+               $("#exampleModalCenter").modal("show");
+               let img = document.createElement('img');
+               img.id = 'image';
+               img.src = e.target.result
+               // clean result before
+               result.innerHTML = '';
+               // append new image
+               result.appendChild(img);
+               // init cropper
+               cropper = new Cropper(img);
+            }
+         };
+         reader.readAsDataURL(e.target.files[0]);
+      }
+   });
+
+   save.addEventListener('click', (e) => {
+      e.preventDefault();
+      // get result to data uri
+      let imgSrc = cropper.getCroppedCanvas({
+         width: 300 // img disp value
+      }).toDataURL();
+      $("#exampleModalCenter").modal("hide");
+      cropped.src = imgSrc;
+      $('#imageBaseData').val(imgSrc)
+   });
+
+</script>
+
+{% endblock content %}
+
+

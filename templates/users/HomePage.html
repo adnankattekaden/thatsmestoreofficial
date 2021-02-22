@@ -1,0 +1,289 @@
+{% extends 'users/base.html' %}
+{% load static %}
+{% block content %}
+{% block title %}HomePage{% endblock %}
+<script src="{% static 'users/js/jquery-3.3.1.min.js' %}"></script>
+<div class="wrapper">
+    <div class="section145">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="main-title-tt">
+                        <div class="main-title-left">
+                            <span>Shop By</span>
+                            <h2>Categories</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="owl-carousel cate-slider owl-theme">
+                        {% for category in categories %}
+                        <div class="item">
+                            <a href="{% url 'category' category.id %}" class="category-item">
+                                <div class="cate-img">
+                                    <img src="{{category.ImageURL}}" alt="">
+                                </div>
+                                <h4>{{category.category_name}}</h4>
+                            </a>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="section145">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="main-title-tt">
+                        <div class="main-title-left">
+                            <span>For You</span>
+                            <h2>Top Featured Products</h2>
+                        </div>
+                        <a href="{% url 'shopgrid' %}" class="see-more-btn">See All</a>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="owl-carousel featured-slider owl-theme">
+                        {% for product in products %}
+                        <div class="item">
+                            <div class="product-item">
+                                <a href="{% url 'product_view' product.id %}" class="product-img">
+                                    <img src="{{product.ImageURL}}" alt="">
+                                    <div class="product-absolute-options">
+                                        {% if product.offer_percentage == 0 %}
+                                        
+                                        {% else %}
+                                        <span class="offer-badge-1">{{product.offer_percentage}}% off</span>
+                                        {% endif %}
+                                        <span data-product="{{product.id}}" data-action="add_wishlist"
+                                            class="like-icon update-cart" title="wishlist"></span>
+                                    </div>
+                                </a>
+                                <div class="product-text-dt">
+                                    <p>Available<span>(In Stock)</span></p>
+                                    <h4>{{product.product_name}}</h4>
+                                    <div class="product-price">₹ {{product.price}}
+                                        {% if product.offer_price == 0 %}
+
+                                        {% else %}
+                                        <span>
+                                            ₹
+                                            {{product.offer_price}}
+                                        </span>
+                                        {% endif %}
+
+                                    </div>
+                                    <div class="qty-cart">
+                                        <div class="quantity buttons_added">
+                                            <input type="button" value="-" class="minus minus-btn">
+                                            <input type="number" step="1" name="quantity" value="1"
+                                                class="input-text qty text">
+                                            <input type="button" value="+" class="plus plus-btn">
+                                        </div>
+                                        <span id="showToast{{product.id}}" data-product="{{product.id}}"
+                                            data-action="add" onclick="showmsg('{{product.id}}')"
+                                            class=" cart-icon add-btn update-cart"><i
+                                                class="uil uil-shopping-cart-alt"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="section145">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="main-title-tt">
+                        <div class="main-title-left">
+                            <span>Offers</span>
+                            <h2>Best Values</h2>
+                        </div>
+                        <a href="{% url 'latest_offers' %}" class="see-more-btn">See All</a>
+                    </div>
+                </div>
+                {% for offer in offers %}
+                <div class="col-lg-4 col-md-6">
+                    {% if offer.offer_type == "single" %}
+                    <a href="{% url 'product_view' offer.product.id %}" class="best-offer-item offr-none">
+                        <img src="{{offer.ImageURL}}" alt="">
+                        <div class="cmtk_dt">
+                            <div class="product_countdown-timer offer-counter-text" data-countdown="2021/01/06">
+                            </div>
+                        </div>
+                    </a>
+                    {% else %}
+                    <a href="{% url 'category' offer.category.id %}" class="best-offer-item offr-none">
+                        <img src="{{offer.ImageURL}}" alt="">
+                        <div class="cmtk_dt">
+                            <div class="product_countdown-timer offer-counter-text" data-countdown="2021/01/06">
+                            </div>
+                        </div>
+                    </a>
+                    {% endif %}
+
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+
+    <div class="section145">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="main-title-tt">
+                        <div class="main-title-left">
+                            <span>For You</span>
+                            <h2>Gym</h2>
+                        </div>
+                        <a href="{% url 'shopgrid' %}" class="see-more-btn">See All</a>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="owl-carousel featured-slider owl-theme">
+                        {% for product in products %}
+                        <div class="item">
+                            <div class="product-item">
+                                <a href="{% url 'product_view' product.id %}" class="product-img">
+                                    <img src="{{product.ImageURL}}" alt="">
+                                    <div class="product-absolute-options">
+                                        {% if product.offer_percentage == 0 %}
+                                        
+                                        {% else %}
+                                        <span class="offer-badge-1">{{product.offer_percentage}}% off</span>
+                                        {% endif %}
+                                        <span data-product="{{product.id}}" data-action="add_wishlist"
+                                            class="like-icon update-cart" title="wishlist"></span>
+                                    </div>
+                                </a>
+                                <div class="product-text-dt">
+                                    <p>Available<span>(In Stock)</span></p>
+                                    <h4>{{product.product_name}}</h4>
+                                    <div class="product-price">₹ {{product.price}}
+                                        {% if product.offer_price == 0 %}
+
+                                        {% else %}
+                                        <span>
+                                            ₹
+                                            {{product.offer_price}}
+                                        </span>
+                                        {% endif %}
+
+                                    </div>
+                                    <div class="qty-cart">
+                                        <div class="quantity buttons_added">
+                                            <input type="button" value="-" class="minus minus-btn">
+                                            <input type="number" step="1" name="quantity" value="1"
+                                                class="input-text qty text">
+                                            <input type="button" value="+" class="plus plus-btn">
+                                        </div>
+                                        <span id="showToast{{product.id}}" data-product="{{product.id}}"
+                                            data-action="add" onclick="showmsg('{{product.id}}')"
+                                            class=" cart-icon add-btn update-cart"><i
+                                                class="uil uil-shopping-cart-alt"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <div class="section145">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="main-title-tt">
+                        <div class="main-title-left">
+                            <span>For You</span>
+                            <h2>Added New Products</h2>
+                        </div>
+                        <a href="{% url 'shopgrid' %}" class="see-more-btn">See All</a>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="owl-carousel featured-slider owl-theme">
+                        {% for product in products %}
+                        <div class="item">
+                            <div class="product-item">
+                                <a href="{% url 'product_view' product.id %}" class="product-img">
+                                    <img src="{{product.ImageURL}}" alt="">
+                                    <div class="product-absolute-options">
+                                        {% if product.offer_percentage == 0 %}
+                                        
+                                        {% else %}
+                                        <span class="offer-badge-1">{{product.offer_percentage}}% off</span>
+                                        {% endif %}
+                                        <span data-product="{{product.id}}" data-action="add_wishlist"
+                                            class="like-icon update-cart" title="wishlist"></span>
+                                    </div>
+                                </a>
+                                <div class="product-text-dt">
+                                    <p>Available<span>(In Stock)</span></p>
+                                    <h4>{{product.product_name}}</h4>
+                                    <div class="product-price">₹ {{product.price}}
+                                        {% if product.offer_price == 0 %}
+
+                                        {% else %}
+                                        <span>
+                                            ₹
+                                            {{product.offer_price}}
+                                        </span>
+                                        {% endif %}
+
+                                    </div>
+                                    <div class="qty-cart">
+                                        <div class="quantity buttons_added">
+                                            <input type="button" value="-" class="minus minus-btn">
+                                            <input type="number" step="1" name="quantity" value="1"
+                                                class="input-text qty text">
+                                            <input type="button" value="+" class="plus plus-btn">
+                                        </div>
+                                        <span id="showToast{{product.id}}" data-product="{{product.id}}"
+                                            data-action="add" onclick="showmsg('{{product.id}}')"
+                                            class=" cart-icon add-btn update-cart"><i
+                                                class="uil uil-shopping-cart-alt"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+
+    // $(document).ready(function () {
+
+    //     console.log('{{wishlist_items.product.id }}');
+    //     if ('{{wishlist_items.product.id }}' === '{{product.id }}') {
+    //         $('wishlist_icon').css({ "background-color": "#5033f6", "color": "#fff" });
+    //     }
+    // })
+</script>
+{% endblock content %}

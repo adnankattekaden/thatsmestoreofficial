@@ -1,0 +1,502 @@
+﻿{% extends 'users/base.html' %}
+{% load static %}
+{% block content %}
+{% block title %}Checkout{% endblock %}
+
+<style>
+    .nom {
+        padding-top: 40px;
+    }
+
+    body {
+        background-color: hsl(0, 0%, 98%);
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        color: hsl(0, 0%, 30%);
+    }
+
+    .box-element {
+        box-shadow: hsl(0, 0%, 80%) 0 0 16px;
+        background-color: #fff;
+        border-radius: 4px;
+        padding: 10px;
+    }
+
+    .thumbnail {
+        width: 100%;
+        height: 200px;
+        -webkit-box-shadow: -1px -3px 5px -2px rgba(214, 214, 214, 1);
+        -moz-box-shadow: -1px -3px 5px -2px rgba(214, 214, 214, 1);
+        box-shadow: -1px -3px 5px -2px rgba(214, 214, 214, 1);
+    }
+
+    .product {
+        border-radius: 0 0 4px 4px;
+    }
+
+    .bg-dark {
+        background-color: #4f868c !important;
+    }
+
+    #cart-icon {
+        width: 25px;
+        display: inline-block;
+        margin-left: 15px;
+    }
+
+    #cart-total {
+        display: block;
+        text-align: center;
+        color: #fff;
+        background-color: red;
+        width: 20px;
+        height: 25px;
+        border-radius: 50%;
+        font-size: 14px;
+    }
+
+    .col-lg-4,
+    .col-lg-6,
+    .col-lg-8,
+    .col-lg-12 {
+        margin-top: 10px;
+    }
+
+    .btn {
+        border-radius: 0;
+    }
+
+    .row-image {
+        width: 100px;
+    }
+
+    .form-field {
+        width: 250px;
+        display: inline-block;
+        padding: 5px;
+    }
+
+    .cart-row {
+        display: flex;
+        align-items: flex-stretch;
+        padding-bottom: 10px;
+        margin-bottom: 10px;
+        border-bottom: 1px solid #ececec;
+
+    }
+
+    .quantity {
+        display: inline-block;
+        font-weight: 700;
+        padding-right: 10px;
+
+
+    }
+
+    .chg-quantity {
+        width: 12px;
+        cursor: pointer;
+        display: block;
+        margin-top: 5px;
+        transition: .1s;
+    }
+
+    .chg-quantity:hover {
+        opacity: .6;
+    }
+
+
+    .hidden {
+        display: none !important;
+    }
+</style>
+
+<div class="wrapper">
+    <div class="all-product-grid">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="box-element" id="form-wrapper">
+                        <form id="form">
+                            <div id="shipping-info col-lg-12">
+                                <hr>
+                                <p>Shipping Information:</p>
+                                <hr>
+                                <div class="text-center text-muted mb-4">
+                                    <span style="color: red;" id="message"></span>
+                                </div>
+                                <div class="form-field">
+                                    <input class="form-control" id="address" type="text" name="address"
+                                        placeholder="Address.." required>
+                                </div>
+                                <div class="form-field">
+                                    <input class="form-control" id="city" type="text" name="city" placeholder="City.."
+                                        required>
+                                </div>
+                                <div class="form-field">
+                                    <input class="form-control" id="state" type="text" name="state"
+                                        placeholder="State.." required>
+                                </div>
+                                <div class="form-field">
+                                    <input class="form-control" id="zipcode" type="text" name="zipcode"
+                                        placeholder="Zip code.." required>
+                                </div>
+                                <div class="form-field">
+                                    <input class="form-control" id="mobilenumber" type="number" name="mobilenumber"
+                                        placeholder="Mobile Number.." required>
+                                </div>
+                                <div class="form-field">
+                                    <input class="form-control" id="country" type="text" name="country"
+                                        placeholder="Country" required>
+                                </div>
+                            </div>
+                            <hr>
+
+                            <div class="card">
+                                {% if ship.queryset != none %}
+
+                                {% else %}
+                                <h3 class="text-center" style="margin-bottom: 10px;">Saved Address</h3>
+                                {% endif %}
+
+                                {% for address in ship %}
+                                <div class="card-body">
+                                    <p>{{address.address}},<br>{{address.city}}
+                                        P.O,<br>{{address.state}},<br>{{address.country}},<br>{{address.mobilenumber}}<br>{{address.zipcode}}
+                                    </p>
+                                    <button id="addAddressBtn"
+                                        onclick="addAddress('{{address.address}}','{{address.city}}','{{address.state}}','{{address.zipcode}}','{{address.mobilenumber}}','{{address.country}}')"
+                                        class="btn btn-primary" type="button">Delivery To This Address</button>
+                                </div>
+                                {% endfor %}
+                            </div>
+
+                            <input id="form-button" class="btn btn-success btn-block" type="button" value="Continue">
+                    </div>
+                    </form>
+                    <br>
+                    <div class="box-element hidden" id="payment-info">
+                        <div>
+                            <button type="button" id="paywithBtn" class="btn btn-primary">PayWIth</button>
+                        </div>
+
+
+                        <!-- Set up a container element for the button -->
+                        <div id="paypal-button-container"></div>
+
+                        <!-- Include the PayPal JavaScript SDK -->
+                        <script
+                            src="https://www.paypal.com/sdk/js?client-id=AbatTQYwGkWQE4lFBQTAzhNehP8UP_IkCIIWVA-R1NfR0pbvFW0m_9I9ldqeHQboAyBjL3nuf081vvqP&currency=USD&disable-funding=card"></script>
+                        <script>
+
+                            var wow
+                            var discounted_price = 0
+                            let updated_price = '{{order.get_cart_total|floatformat:2}}'
+                            function pay(newprice) {
+                                console.log('nw', newprice)
+                                discounted_price = newprice
+                            }
+                            function execute() {
+                                if (discounted_price == 0) {
+                                    updated_price = '{{order.get_cart_total|floatformat:2}}'
+                                } else {
+                                    updated_price = discounted_price
+                                }
+                                console.log('updateprice', updated_price)
+                            }
+
+                            // Render the PayPal button into #paypal-button-container
+                            paypal.Buttons({
+                                // Set up the transaction
+                                createOrder: function (data, actions) {
+                                    return actions.order.create({
+                                        purchase_units: [{
+                                            amount: {
+                                                value: updated_price
+                                            }
+                                        }]
+                                    });
+                                },
+
+                                // Finalize the transaction
+                                onApprove: function (data, actions) {
+                                    return actions.order.capture().then(function (details) {
+                                        submitFormData('paypal')
+                                        // Show a success message to the buyer
+                                        // alert('Transaction completed by paypal ' + details.payer.name.given_name + '!');
+                                    });
+                                }
+
+
+                            }).render('#paypal-button-container');
+                        </script>
+
+
+                        <!-- COD IMPLEMENT -->
+
+                        <button id="make-payment" class="btn btn-success btn-block"
+                            style="background-color: #15b49f;">COD</button>
+                        <script>
+                            document.getElementById('make-payment').addEventListener('click', function (e) {
+                                submitFormData('cod')
+                            })
+                        </script>
+
+                        <!-- Wallet Implement -->
+                        <button id="wallet-payment" class="btn btn-success btn-block"
+                            style="background-color: #7da000;">Wallet</button>
+                        <script>
+                            document.getElementById('wallet-payment').addEventListener('click', function (e) {
+                                submitFormData('wallet')
+                            })
+                        </script>
+
+                        <!-- Razor PAY IMPLEMENT -->
+
+                        <button id="rzp-button1" class="btn btn-success btn-block"
+                            style="background-color: #fe980f;">RazorPay</button>
+
+
+                        <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+                        <script>
+                            var total = '{{order.get_cart_total|floatformat:2}}'
+                            var payment_status = 'razorpay'
+                            var options = {
+                                "key": "rzp_test_P9QI5lhnHOuMk7", // Enter the Key ID generated from the Dashboard
+                                "amount": total, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+                                "currency": "INR",
+                                "name": "Thats'Me INC",
+                                "description": "Test Transaction",
+                                "image": "https://example.com/your_logo",
+                                "order_id": "{{order_id}}", //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+                                "handler": function (response) {
+                                    submitFormData(payment_status)
+                                },
+                                "prefill": {
+                                    "name": "Gaurav Kumar",
+                                    "email": "gaurav.kumar@example.com",
+                                    "contact": "9999999999"
+                                },
+                                "notes": {
+                                    "address": "Razorpay Corporate Office"
+                                },
+                                "theme": {
+                                    "color": "#F37254"
+                                }
+                            };
+                            var rzp1 = new Razorpay(options);
+                            document.getElementById('rzp-button1').onclick = function (e) {
+                                rzp1.open();
+                                e.preventDefault();
+                            }
+                        </script>
+
+
+                        <!-- <button id="razor-payment">RazorPay</button>
+                        <script>
+                            var payment_status = 'razorpay'
+                            document.getElementById('razor-payment').addEventListener('click', function (e) {
+                                submitFormData(payment_status)
+                            })
+                        </script> -->
+
+
+                    </div>
+
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="box-element">
+                        <a class="btn btn-outline-dark" href="{% url 'view_cart' %}">&#x2190; Back to Cart</a>
+                        <hr>
+                        <h3>Order Summary</h3>
+                        <hr>
+                        {% for item in items %}
+                        <div class="cart-row">
+                            <div style="flex:2"><img class="row-image" src="{{item.product.ImageURL}}"></div>
+                            <div style="flex:2">
+                                <p class="nom">{{item.product.productname}}</p>
+                            </div>
+                            <div style="flex:1">
+                                <p class="nom">₹ {{item.product.price|floatformat:2}}</p>
+                            </div>
+                            <div style="flex:1">
+                                <p class="nom">x {{item.quantity}}</p>
+                            </div>
+                        </div>
+                        {% endfor %}
+                        <h5>Items: {{order.get_cart_items}}</h5>
+                        <h5 id="total">Total: ₹ {{order.get_cart_total|floatformat:2}}</h5>
+                        <h5 id="discountId" class="hidden">Discount :<span id="discount"></span>&nbsp;%</h5>
+                        <h5 id="newpriceId" class="hidden">New Price:<span id="new_price"></span></h5>
+                    </div>
+                    <br>
+
+                    <div class="box-element">
+                        <h3>Apply Voucher</h3>
+                        <span style="color: red;" id="coupenmsg"></span><br>
+                        <input type="text" id="coupen" name="coupen">
+                        <button id="coupen_btn" class="btn btn-primary" type="button">Apply</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    $('#paywithBtn').click(function () {
+        console.log('www')
+        var PaywithInfo = {
+            csrfmiddlewaretoken: csrftoken,
+            total:total,
+        }
+        document.getElementById('wallet-payment').classList.add('hidden')
+        console.log('wow')
+        $.ajax({
+            url: '/process_order/',
+            type: 'POST',
+            data: PaywithInfo,
+            dataType: 'JSON',
+        })
+    })
+
+</script>
+
+
+<script>
+
+    $('#coupen_btn').click(function () {
+        let coupen = $('#coupen').val()
+        var coupenInfo = {
+            csrfmiddlewaretoken: csrftoken,
+            coupenCode: coupen
+        }
+        if (coupen == '') {
+            $('#coupenmsg').html('Enter An Coupen Code')
+        }
+        else {
+            $.ajax({
+                url: '/coupen_process/',
+                type: 'POST',
+                data: coupenInfo,
+                dataType: 'JSON',
+                success: function (data) {
+                    console.log(data);
+                    if (data.validcoupen == 'validcoupen') {
+                        $('#coupenmsg').html('Coupen is valid')
+                        $('#discount').html(data.discount)
+                        $('#new_price').html(data.new_price)
+                        document.getElementById('discountId').classList.remove('hidden')
+                        document.getElementById('newpriceId').classList.remove('hidden')
+                        $('#total').wrap('<del></del>')
+                        let newprice = data.new_price
+                        pay(newprice)
+                        execute()
+                    }
+                    else if (data == 'notvalidcoupen') {
+                        $('#coupenmsg').html('Coupen is not valid')
+                    }
+
+                }
+            })
+
+        }
+
+    })
+
+
+
+    $('#form-button').click(function () {
+        var shippingInfo = {
+            csrfmiddlewaretoken: csrftoken,
+            address: $('#address').val(),
+            city: $('#city').val(),
+            state: $('#state').val(),
+            zipcode: $('#zipcode').val(),
+            mobilenumber: $('#mobilenumber').val(),
+            country: $('#country').val(),
+        }
+
+        if (shippingInfo.address == '') {
+            $('#message').html('Enter Address')
+        }
+        else if (shippingInfo.city == '') {
+            $('#message').html('Enter City')
+        }
+        else if (shippingInfo.state == '') {
+            $('#message').html('Enter State')
+        }
+        else if (shippingInfo.zipcode == '') {
+            $('#message').html('Enter ZipCode')
+        }
+        else if (shippingInfo.mobilenumber == '') {
+            $('#message').html('Enter MobileNumber')
+        }
+        else if (shippingInfo.country == '') {
+            $('#message').html('Enter Country')
+        }
+        else {
+            document.getElementById('form-button').classList.add('hidden')
+            document.getElementById('payment-info').classList.remove('hidden')
+
+        }
+
+    })
+
+
+    function submitFormData(payment_status) {
+        console.log(payment_status)
+        var shippingInfo = {
+            csrfmiddlewaretoken: csrftoken,
+            address: $('#address').val(),
+            city: $('#city').val(),
+            state: $('#state').val(),
+            zipcode: $('#zipcode').val(),
+            mobilenumber: $('#mobilenumber').val(),
+            country: $('#country').val(),
+            paymentmode: payment_status,
+            total: total,
+        }
+        $.ajax({
+            url: '/process_order/',
+            type: 'POST',
+            data: shippingInfo,
+            dataType: 'JSON',
+            success: function (data) {
+                if (data == 'itemsaved') {
+                    // alert('Transaction Completed')
+                    window.location.href = "{% url 'order_placed' order.id %}"
+                }
+                else if (data == 'insufficiant_balance') {
+                    $('#message').html('Insufficiant Balance in Wallet')
+                }
+                else if (data == 'active_wallet') {
+                    $('#message').html('Your Wallet Is Empty!')
+                }
+            }
+        })
+    }
+
+    function addAddress(address, city, state, zipcode, country, mobilenumber) {
+        document.getElementById('address').value = address
+        document.getElementById('city').value = city
+        document.getElementById('state').value = state
+        document.getElementById('zipcode').value = zipcode
+        document.getElementById('country').value = country
+        document.getElementById('mobilenumber').value = mobilenumber
+    }
+
+</script>
+
+
+
+{% endblock content %}
