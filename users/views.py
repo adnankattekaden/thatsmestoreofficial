@@ -197,7 +197,8 @@ def view_cart(request):
         cartitems = order['get_cart_items']
         user_profile = []
         items_count = 0
-
+        wishlist_items = 0
+        wishlist_count = 0
     context = {'items':items,'order':order,'user_profile':user_profile,'cartitems':cartitems,'items_count':items_count,'wishlist_items':wishlist_items,'wishlist_count':wishlist_count}
     return render(request, 'users/Cart.html',context)
 
