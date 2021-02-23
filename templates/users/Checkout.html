@@ -207,6 +207,7 @@
                                     updated_price = '{{order.get_cart_total|floatformat:2}}'
                                 } else {
                                     updated_price = discounted_price
+                                    console.log('hhe',updated_price)
                                 }
                                 console.log('updateprice', updated_price)
                             }
@@ -352,12 +353,12 @@
     </div>
 </div>
 
-<script>
+<!-- <script>
     $('#paywithBtn').click(function () {
         console.log('www')
         var PaywithInfo = {
             csrfmiddlewaretoken: csrftoken,
-            total:total,
+            total: total,
         }
         document.getElementById('wallet-payment').classList.add('hidden')
         console.log('wow')
@@ -369,7 +370,7 @@
         })
     })
 
-</script>
+</script> -->
 
 
 <script>

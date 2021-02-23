@@ -227,6 +227,26 @@ def checkout(request):
             user_profile = CustomerDetails.objects.get(user_id=request.user)
         except:
             user_profile = []
+
+
+        customer_details = CustomerDetails.objects.get(user_id=request.user)
+        reffered_user = customer_details.reffered_user
+        refferd_user = CustomerDetails.objects.get(user_id=reffered_user)
+        if CustomerDetails.objects.filter(user_type='Refferal') and Order.objects.filter(customer=request.user, complete=True).count() < 1 :
+            myuuid = uuid.uuid4().hex[:8]
+            total_credit,total_debit = 0,0
+            transaction_id = 'ORDER' + str(myuuid)
+            current_customer = CustomerDetails.objects.get(user=request.user)
+            cashback_amount = float(order.get_cart_total(discount=0)) * 30/100
+            Wallet.objects.create(customer=refferd_user.user,transaction_name='Cashback',trasaction_type='Credit',credit_amount=cashback_amount,transaction_id=transaction_id)
+            if Wallet.objects.filter(customer=refferd_user.user).exists():
+                items = Wallet.objects.filter(customer=refferd_user.user)
+                for i in items:
+                    total_credit += i.credit_amount 
+                    total_debit += i.debit_amount        
+                net_amount = total_credit - total_debit
+                i.net_amount = net_amount
+                i.save()
         
     else:
         items = []
@@ -334,6 +354,8 @@ def process_order(request):
                     order.complete = True
                 order.save()
 
+
+
         ShippingAddress.objects.create(customer=request.user,order=order,address=address,city=city,state=state,zipcode=zipcode,country=country,mobilenumber=mobilenumber,payment_status=payment_mode)
         add = 'itemsaved'
     else:
@@ -388,7 +410,7 @@ def dashboard_overview(request):
         wishlist_items = WishList.objects.filter(customer=request.user)
         wishlist_count = wishlist_items.count()
         customer_details = CustomerDetails.objects.get(user_id=request.user)
-        refferd_users = CustomerDetails.objects.filter(user_id=request.user,user_type='Refferal')
+        refferd_users = CustomerDetails.objects.filter(reffered_user=request.user.id)
         refferd_users_count = refferd_users.count()
         try:
             user_profile = CustomerDetails.objects.get(user_id=request.user)
@@ -411,7 +433,7 @@ def user_profile(request,id):
         wishlist_items = WishList.objects.filter(customer=request.user)
         wishlist_count = wishlist_items.count()
         customer_details = CustomerDetails.objects.get(user_id=request.user)
-        refferd_users = CustomerDetails.objects.filter(user_id=request.user,user_type='Refferal')
+        refferd_users = CustomerDetails.objects.filter(reffered_user=request.user.id)
         refferd_users_count = refferd_users.count()
         try:
             user_profile = CustomerDetails.objects.get(user_id=request.user)
@@ -480,7 +502,7 @@ def dashboard_my_wishlist(request):
         wishlist_items = WishList.objects.filter(customer=request.user)
         wishlist_count = wishlist_items.count()
         customer_details = CustomerDetails.objects.get(user_id=request.user)
-        refferd_users = CustomerDetails.objects.filter(user_id=request.user,user_type='Refferal')
+        refferd_users = CustomerDetails.objects.filter(reffered_user=request.user.id)
         refferd_users_count = refferd_users.count()
         try:
             user_profile = CustomerDetails.objects.get(user_id=request.user)
@@ -501,7 +523,7 @@ def dashboard_my_wallet(request):
         wishlist_items = WishList.objects.filter(customer=request.user)
         wishlist_count = wishlist_items.count()
         customer_details = CustomerDetails.objects.get(user_id=request.user)
-        refferd_users = CustomerDetails.objects.filter(user_id=request.user,user_type='Refferal')
+        refferd_users = CustomerDetails.objects.filter(reffered_user=request.user.id)
         refferd_users_count = refferd_users.count()
         try:
             user_profile = CustomerDetails.objects.get(user_id=request.user)
@@ -552,7 +574,7 @@ def dashboard_my_rewards(request):
         wishlist_items = WishList.objects.filter(customer=request.user)
         wishlist_count = wishlist_items.count()
         customer_details = CustomerDetails.objects.get(user_id=request.user)
-        refferd_users = CustomerDetails.objects.filter(user_id=request.user,user_type='Refferal')
+        refferd_users = CustomerDetails.objects.filter(reffered_user=request.user.id)
         refferd_users_count = refferd_users.count()
         try:
             user_profile = CustomerDetails.objects.get(user_id=request.user)
@@ -574,7 +596,7 @@ def dashboard_my_orders(request):
         wishlist_items = WishList.objects.filter(customer=request.user)
         wishlist_count = wishlist_items.count()
         customer_details = CustomerDetails.objects.get(user_id=request.user)
-        refferd_users = CustomerDetails.objects.filter(user_id=request.user,user_type='Refferal')
+        refferd_users = CustomerDetails.objects.filter(reffered_user=request.user.id)
         refferd_users_count = refferd_users.count()
         try:
             user_profile = CustomerDetails.objects.get(user_id=request.user)
@@ -597,7 +619,7 @@ def dashboard_my_order_items(request,id):
         wishlist_items = WishList.objects.filter(customer=request.user)
         wishlist_count = wishlist_items.count()
         customer_details = CustomerDetails.objects.get(user_id=request.user)
-        refferd_users = CustomerDetails.objects.filter(user_id=request.user,user_type='Refferal')
+        refferd_users = CustomerDetails.objects.filter(reffered_user=request.user.id)
         refferd_users_count = refferd_users.count()
         try:
             user_profile = CustomerDetails.objects.get(user_id=request.user)
@@ -626,7 +648,7 @@ def dashboard_my_cancelled_items(request):
         wishlist_items = WishList.objects.filter(customer=request.user)
         wishlist_count = wishlist_items.count()
         customer_details = CustomerDetails.objects.get(user_id=request.user)
-        refferd_users = CustomerDetails.objects.filter(user_id=request.user,user_type='Refferal')
+        refferd_users = CustomerDetails.objects.filter(reffered_user=request.user.id)
         refferd_users_count = refferd_users.count()
         try:
             user_profile = CustomerDetails.objects.get(user_id=request.user)
@@ -659,7 +681,7 @@ def dashboard_my_address(request):
         wishlist_count = wishlist_items.count()
         shipping_address = ShippingAddress.objects.filter(customer=request.user).distinct('address')
         customer_details = CustomerDetails.objects.get(user_id=request.user)
-        refferd_users = CustomerDetails.objects.filter(user_id=request.user,user_type='Refferal')
+        refferd_users = CustomerDetails.objects.filter(reffered_user=request.user.id)
         refferd_users_count = refferd_users.count()
         try:
             user_profile = CustomerDetails.objects.get(user_id=request.user)
@@ -688,8 +710,8 @@ def dashboard_add_address(request):
                 user_profile = CustomerDetails.objects.get(user_id=request.user)
             except:
                 user_profile = []
-            refferd_users = CustomerDetails.objects.filter(user_id=request.user,user_type='Refferal')
-            refferd_users_count = refferd_users.count()    
+            refferd_users = CustomerDetails.objects.filter(reffered_user=request.user.id)
+            refferd_users_count = refferd_users.count() 
             context = {'user_profile':user_profile,'customer_details':customer_details,'refferd_users_count':refferd_users_count}
             return render(request, 'users/Add_Address.html',context)
     else:
@@ -703,7 +725,7 @@ def dashboard_update_address(request,id):
             user_profile = CustomerDetails.objects.get(user_id=request.user)
         except:
             user_profile = []
-        refferd_users = CustomerDetails.objects.filter(user_id=request.user,user_type='Refferal')
+        refferd_users = CustomerDetails.objects.filter(reffered_user=request.user.id)
         refferd_users_count = refferd_users.count()
         context = {'address':address,'user_profile':user_profile,'customer_details':customer_details,'refferd_users_count':refferd_users_count}
         if request.method == 'POST':

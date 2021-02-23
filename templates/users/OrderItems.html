@@ -72,7 +72,11 @@
                                         <div class="cart-item">
                                             <div class="cart-product-img">
                                                 <img src="{{order.product.ImageURL}}" alt="">
-                                                <div class="offer-badge">4% OFF</div>
+                                                {% if order.product.offer_percentage == 0 %}
+                                        
+                                                {% else %}
+                                                <div class="offer-badge">{{order.product.offer_percentage}}% off</div>
+                                                {% endif %} 
                                             </div>
                                             <div class="cart-text">
                                                 <h4>{{order.product.product_name}}</h4>

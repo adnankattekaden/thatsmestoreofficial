@@ -119,16 +119,16 @@
                     <a href="{% url 'product_view' offer.product.id %}" class="best-offer-item offr-none">
                         <img src="{{offer.ImageURL}}" alt="">
                         <div class="cmtk_dt">
-                            <div class="product_countdown-timer offer-counter-text" data-countdown="2021/01/06">
-                            </div>
+                            <!-- <div class="product_countdown-timer offer-counter-text" data-countdown="2021/01/06">
+                            </div> -->
                         </div>
                     </a>
                     {% else %}
                     <a href="{% url 'category' offer.category.id %}" class="best-offer-item offr-none">
                         <img src="{{offer.ImageURL}}" alt="">
                         <div class="cmtk_dt">
-                            <div class="product_countdown-timer offer-counter-text" data-countdown="2021/01/06">
-                            </div>
+                            <!-- <div class="product_countdown-timer offer-counter-text" data-countdown="2021/01/06">
+                            </div> -->
                         </div>
                     </a>
                     {% endif %}
