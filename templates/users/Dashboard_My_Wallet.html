@@ -63,7 +63,7 @@
                                     <h4><i class="uil uil-wallet"></i>My Wallet</h4>
                                 </div>
                             </div>
-                            <div class="col-lg-6 col-md-12">
+                            <div class="col-lg-12 col-md-12">
                                 <div class="pdpt-bg">
                                     <div class="reward-body-dtt">
                                         <div class="reward-img-icon">
@@ -75,7 +75,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-6 col-md-12">
+                            <!-- <div class="col-lg-6 col-md-12">
                                 <div class="pdpt-bg">
                                     <div class="gambo-body-cash">
                                         <div class="reward-img-icon">
@@ -87,15 +87,21 @@
                                         <p>100% of thiscan be used for your next order.</p>
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
                             <div class="col-lg-12 col-md-12">
                                 <div class="pdpt-bg">
+                                    {% if active_offers == "False" %}
+
+                                    {% else %}
                                     <div class="pdpt-title">
                                         <h4>Active Offers</h4>
                                     </div>
+                                    {% endif %}
+                                   
                                     <div class="active-offers-body">
                                         <div class="table-responsive">
                                             <table class="table ucp-table earning__table">
+                                                {% if active_offers == "False" %}
                                                 <thead class="thead-s">
                                                     <tr>
                                                         <th scope="col">Offers</th>
@@ -104,19 +110,25 @@
                                                         <th scope="col">Status</th>
                                                     </tr>
                                                 </thead>
+
+                                                {% endif %}
                                                 <tbody>
+                                                    {% for offer in active_offers %}
                                                     <tr>
-                                                        <td>15%</td>
-                                                        <td>GAMBOCOUP15</td>
-                                                        <td>31 May 2020</td>
+                                                        <td>{{offer.discount_amount}}%</td>
+                                                        <td>{{offer.coupen_code}}</td>
+                                                        <td>{{offer.validity_expire}}</td>
                                                         <td><b class="offer_active">Activated</b></td>
                                                     </tr>
+                                                    {% endfor %}
                                                 </tbody>
                                             </table>
                                         </div>
                                     </div>
+                                    
                                 </div>
                             </div>
+
                             <div class="col-lg-6 col-md-12">
                                 <div class="pdpt-bg">
                                     <div class="pdpt-title">

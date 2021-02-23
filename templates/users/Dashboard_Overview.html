@@ -66,7 +66,7 @@
                                     <h2>Hi! {{request.user}}</h2>
                                 </div>
                             </div>
-                            <div class="col-lg-6 col-md-12">
+                            <!-- <div class="col-lg-6 col-md-12">
                                 <div class="pdpt-bg">
                                     <div class="pdpt-title">
                                         <h4>My Rewards</h4>
@@ -91,22 +91,20 @@
                                     <a href="{% url 'rewards' %}" class="more-link14">Rewards and Details <i
                                             class="uil uil-angle-double-right"></i></a>
                                 </div>
-                            </div>
-                            <div class="col-lg-6 col-md-12">
+                            </div> -->
+                            <div class="col-lg-12 col-md-12">
                                 <div class="pdpt-bg">
                                     <div class="pdpt-title">
                                         <h4>My Orders</h4>
                                     </div>
                                     <div class="ddsh-body">
-                                        <h2>2 Recently Purchases</h2>
+                                        <h2>{{orders_count}} Recently Purchases</h2>
                                         <ul class="order-list-145">
                                             <li>
                                                 <div class="smll-history">
-                                                    <div class="order-title">2 Items <span data-inverted=""
-                                                            data-tooltip="2kg broccoli, 1kg Apple"
-                                                            data-position="top center">?</span></div>
-                                                    <div class="order-status">On the way</div>
-                                                    <p>$22</p>
+                                                    <div class="order-title">{{item_count}} Items</div>
+                                                    <!-- <div class="order-status">On the way</div>
+                                                    <p>$22</p> -->
                                                 </div>
                                             </li>
                                         </ul>
@@ -121,20 +119,12 @@
                                         <h4>My Wallet</h4>
                                     </div>
                                     <div class="wllt-body">
-                                        <h2>Credits $100</h2>
+                                        <h2>Credits ₹ {{wallet_amount}}</h2>
                                         <ul class="wallet-list">
-                                            <li>
-                                                <a href="#" class="wallet-links14"><i
-                                                        class="uil uil-card-atm"></i>Payment Methods</a>
-                                            </li>
-                                            <li>
+                                            <!-- <li>
                                                 <a href="#" class="wallet-links14"><i class="uil uil-gift"></i>3
                                                     offers Active</a>
-                                            </li>
-                                            <li>
-                                                <a href="#" class="wallet-links14"><i class="uil uil-coins"></i>Points
-                                                    Earning</a>
-                                            </li>
+                                            </li> -->
                                         </ul>
                                     </div>
                                     <a href="{% url 'rewards' %}"  class="more-link14">Rewards and Details <i

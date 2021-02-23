@@ -238,7 +238,7 @@ def checkout(request):
             transaction_id = 'ORDER' + str(myuuid)
             current_customer = CustomerDetails.objects.get(user=request.user)
             cashback_amount = float(order.get_cart_total(discount=0)) * 30/100
-            Wallet.objects.create(customer=refferd_user.user,transaction_name='Cashback',trasaction_type='Credit',credit_amount=cashback_amount,transaction_id=transaction_id)
+            Wallet.objects.create(customer=refferd_user.user,transaction_name='Cashback',trasaction_type='Credit',credit_amount=cashback_amount,transaction_id=transaction_id,cashback_amount=cashback_amount)
             if Wallet.objects.filter(customer=refferd_user.user).exists():
                 items = Wallet.objects.filter(customer=refferd_user.user)
                 for i in items:
@@ -412,14 +412,20 @@ def dashboard_overview(request):
         customer_details = CustomerDetails.objects.get(user_id=request.user)
         refferd_users = CustomerDetails.objects.filter(reffered_user=request.user.id)
         refferd_users_count = refferd_users.count()
+        order_overview = Order.objects.filter(complete=False)
+        orders_count = Order.objects.filter(complete=False).count()        
+        item_count = items.count()
         try:
             user_profile = CustomerDetails.objects.get(user_id=request.user)
+            transaction = Wallet.objects.filter(customer=request.user).latest('time')
+            wallet_amount = transaction.net_amount
         except:
             user_profile = []
+            wallet_amount = 0
     else:
         return redirect(user_signin)
     
-    context = {'refferd_users_count':refferd_users_count,'customer_details':customer_details,'items':items,'order':order,'cartitems':cartitems,'user_profile':user_profile,'items_count':items_count,'wishlist_items':wishlist_items,'wishlist_count':wishlist_count}
+    context = {'orders_count':orders_count,'item_count':item_count,'wallet_amount':wallet_amount,'refferd_users_count':refferd_users_count,'customer_details':customer_details,'items':items,'order':order,'cartitems':cartitems,'user_profile':user_profile,'items_count':items_count,'wishlist_items':wishlist_items,'wishlist_count':wishlist_count}
     return render(request, 'users/Dashboard_Overview.html',context)
 
 def user_profile(request,id):
@@ -530,6 +536,8 @@ def dashboard_my_wallet(request):
         except:
             user_profile = []
 
+        active_offers = Coupens.objects.filter(coupen_status=False)
+        print(active_offers)
 
         #wallet starts here
         if request.method == 'POST':
@@ -562,7 +570,7 @@ def dashboard_my_wallet(request):
     else:
         return redirect(user_signin)
 
-    context = {'refferd_users_count':refferd_users_count,'customer_details':customer_details,'user_profile':user_profile,'cashback_amount':cashback_amount,'wallet_amount':wallet_amount,'transactions':transactions,'items':items,'order':order,'cartitems':cartitems,'items_count':items_count,'wishlist_items':wishlist_items,'wishlist_count':wishlist_count}
+    context = {'active_offers':active_offers,'refferd_users_count':refferd_users_count,'customer_details':customer_details,'user_profile':user_profile,'cashback_amount':cashback_amount,'wallet_amount':wallet_amount,'transactions':transactions,'items':items,'order':order,'cartitems':cartitems,'items_count':items_count,'wishlist_items':wishlist_items,'wishlist_count':wishlist_count}
     return render(request, 'users/Dashboard_My_Wallet.html',context)
 
 def dashboard_my_rewards(request):
