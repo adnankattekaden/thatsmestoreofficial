@@ -38,7 +38,6 @@ def admin_login(request):
             messages.info(request,'invalid credentials') 
             return redirect(admin_login)
     else:
-        print('heyyy')
         return render(request, './vendor/AdminLogin.html')
 
 def admin_logout(request):

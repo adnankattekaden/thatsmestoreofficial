@@ -23,8 +23,8 @@ function sleep(ms) {
   }
   
   async function delayedGreeting() {
-    await sleep(15000);
-    await sleep(35000);
+    await sleep(10000000000);
+    await sleep(30000);
   }
   
   delayedGreeting();

@@ -235,26 +235,6 @@ def checkout(request):
         except:
             user_profile = []
 
-
-        customer_details = CustomerDetails.objects.get(user_id=request.user)
-        reffered_user = customer_details.reffered_user
-        refferd_user = CustomerDetails.objects.get(user_id=reffered_user)
-        if CustomerDetails.objects.filter(user_type='Refferal') and Order.objects.filter(customer=request.user, complete=True).count() < 1 :
-            myuuid = uuid.uuid4().hex[:8]
-            total_credit,total_debit = 0,0
-            transaction_id = 'ORDER' + str(myuuid)
-            current_customer = CustomerDetails.objects.get(user=request.user)
-            cashback_amount = float(order.get_cart_total(discount=0)) * 30/100
-            Wallet.objects.create(customer=refferd_user.user,transaction_name='Cashback',trasaction_type='Credit',credit_amount=cashback_amount,transaction_id=transaction_id,cashback_amount=cashback_amount)
-            if Wallet.objects.filter(customer=refferd_user.user).exists():
-                items = Wallet.objects.filter(customer=refferd_user.user)
-                for i in items:
-                    total_credit += i.credit_amount 
-                    total_debit += i.debit_amount        
-                net_amount = total_credit - total_debit
-                i.net_amount = net_amount
-                i.save()
-        
     else:
         items = []
         order = {'get_cart_total':0, 'get_cart_items':0}
@@ -359,10 +339,28 @@ def process_order(request):
                 if total == order.get_cart_total(discount=0):
                     order.grand_total = total
                     order.complete = True
+                customer_details = CustomerDetails.objects.get(user_id=request.user)
+                reffered_user = customer_details.reffered_user
+                if reffered_user is None:
+                    pass
+                else:
+                    refferd_user = CustomerDetails.objects.get(user_id=reffered_user)
+                    if CustomerDetails.objects.filter(user_type='Refferal') and Order.objects.filter(customer=request.user, complete=True).count() < 1 :
+                        myuuid = uuid.uuid4().hex[:8]
+                        total_credit,total_debit = 0,0
+                        transaction_id = 'ORDER' + str(myuuid)
+                        current_customer = CustomerDetails.objects.get(user=request.user)
+                        cashback_amount = float(order.get_cart_total(discount=0)) * 30/100
+                        Wallet.objects.create(customer=refferd_user.user,transaction_name='Cashback',trasaction_type='Credit',credit_amount=cashback_amount,transaction_id=transaction_id,cashback_amount=cashback_amount)
+                        if Wallet.objects.filter(customer=refferd_user.user).exists():
+                            items = Wallet.objects.filter(customer=refferd_user.user)
+                            for i in items:
+                                total_credit += i.credit_amount 
+                                total_debit += i.debit_amount        
+                            net_amount = total_credit - total_debit
+                            i.net_amount = net_amount
+                            i.save()
                 order.save()
-
-
-
         ShippingAddress.objects.create(customer=request.user,order=order,address=address,city=city,state=state,zipcode=zipcode,country=country,mobilenumber=mobilenumber,payment_status=payment_mode)
         add = 'itemsaved'
     else:
@@ -545,7 +543,7 @@ def dashboard_my_wallet(request):
             user_profile = []
 
         active_offers = Coupens.objects.filter(coupen_status=False)
-        print(active_offers)
+
 
         #wallet starts here
         if request.method == 'POST':
