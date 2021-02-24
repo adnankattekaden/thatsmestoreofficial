@@ -526,8 +526,6 @@ def create_offer(request):
             offer_image = request.FILES['images']
             offer_starts = request.POST['offer_start']
             offer_ends = request.POST['offer_ends']
-            offer_time_starts = request.POST['time_start']
-            offer_time_expiry = request.POST['time_expiry']
             if offer_type == 'single':
                 product = Product.objects.get(id=product_id)
                 real_price = product.price

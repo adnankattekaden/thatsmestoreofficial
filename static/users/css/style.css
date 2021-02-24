@@ -1963,14 +1963,16 @@ span.like-icon {
 .qty-cart {
     display: flex;
     align-items: center;
-    margin-top: 17px
+    margin-top: 17px;
+    margin-right: 6rem;
 }
 
 .cart-icon {
     margin-left: auto;
     font-size: 20px;
     color: #c7c7c7;
-    cursor: pointer
+    cursor: pointer;
+    /* margin-right: 3em; */
 }
 
 .cart-icon:hover {

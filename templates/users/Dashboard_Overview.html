@@ -20,8 +20,8 @@
                         {% endif %}
 
                         <h4>{{request.user}}</h4>
-                        <div class="earn-points"><img src="{% static 'users/images/Dollar.svg' %}" alt="">Refferal Link : <span
-                            style="color: blue;"><a>{{ request.META.HTTP_HOST }}/{{"reffral_signup"}}/{{customer_details.refferal_code}}</a></span>
+                        <div class="earn-points"><img src="{% static 'users/images/Dollar.svg' %}" alt="">Refferal Link
+                            : <span style="color: blue;"><a>{{ request.META.HTTP_HOST }}/{{"reffral_signup"}}/{{customer_details.refferal_code}}</a></span>
                         </div>
                         <div><br>
                             <span class="earn-points">Total {{refferd_users_count}}</span>
@@ -127,7 +127,7 @@
                                             </li> -->
                                         </ul>
                                     </div>
-                                    <a href="{% url 'rewards' %}"  class="more-link14">Rewards and Details <i
+                                    <a href="{% url 'rewards' %}" class="more-link14">Rewards and Details <i
                                             class="uil uil-angle-double-right"></i></a>
                                 </div>
                             </div>

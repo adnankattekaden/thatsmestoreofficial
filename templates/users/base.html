@@ -163,6 +163,8 @@
             </div>
         </div>
 
+        {% if user.is_authenticated %}
+
         <div id="notifications" class="toast" style="position: absolute; top: 110px; right: 0;">
             <div class="toast-header">
                 <i class="fas fa-bell"></i> &nbsp;
@@ -176,6 +178,7 @@
                 Item Was Added
             </div>
         </div>
+        {% endif %}
     </header>
 
 

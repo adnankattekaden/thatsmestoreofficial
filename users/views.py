@@ -172,11 +172,17 @@ def user_homepage(request):
         wishlist_items = '0'
         wishlist_count = '0'
 
-    products = Product.objects.all()
+    data={}
     category = Category.objects.all()
+    c=0
+    for i in category:
+        if c==2:
+            break
+        data[i.category_name] = Product.objects.filter(category=i)
+        c+=1
     offers = Offer.objects.filter(offer_status='Valid')
-    
-    context = {'offers':offers,'products':products,'cartitems':cartitems,'categories':category,'user_profile':user_profile,'items_count':items_count,'wishlist_items':wishlist_items,'wishlist_count':wishlist_count}
+
+    context = {'offers':offers,'cartitems':cartitems,'categories':category,'user_profile':user_profile,'items_count':items_count,'wishlist_items':wishlist_items,'wishlist_count':wishlist_count,'datas':data}
     return render(request, 'users/HomePage.html',context)
 
 def view_cart(request):
@@ -416,6 +422,7 @@ def dashboard_overview(request):
         order_overview = Order.objects.filter(complete=False)
         orders_count = Order.objects.filter(complete=False).count()        
         item_count = items.count()
+        
         try:
             user_profile = CustomerDetails.objects.get(user_id=request.user)
             transaction = Wallet.objects.filter(customer=request.user).latest('time')
@@ -781,7 +788,12 @@ def shop_grid(request):
         wishlist_count = 0
         user_profile = []
     product = Product.objects.all()
-    context = {'user_profile':user_profile,'products':product,'items':items,'order':order,'cartitems':cartitems,'items_count':items_count,'wishlist_items':wishlist_items,'wishlist_count':wishlist_count}
+    
+    data={}
+    category = Category.objects.all()
+    for i in category:
+        data[i.category_name] = Product.objects.filter(category=i)
+    context = {'datas':data,'user_profile':user_profile,'products':product,'items':items,'order':order,'cartitems':cartitems,'items_count':items_count,'wishlist_items':wishlist_items,'wishlist_count':wishlist_count}
     return render(request, 'users/Shop_Grid.html',context)
 
 def single_product_view(request,id):
