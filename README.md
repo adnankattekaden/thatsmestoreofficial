@@ -10,6 +10,22 @@ Technologies Used
 3) CSS
 4) JAVASCRIPT
 
+User Side:
+- Add To Cart
+- Order History
+- Edit Profile
+- Image Cropping
+- Refferal Signup
+- Wallet
+
+Admin Side:
+- User Managemet
+- Product Management
+- Category Management
+- Order Management
+- Custom Coupen
+- Reports
+
 Credentials Of Live Project
 -------------------------------
 
