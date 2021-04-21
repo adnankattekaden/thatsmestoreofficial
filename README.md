@@ -14,11 +14,13 @@ Credentials Of Live Project
 -------------------------------
 
 ### User Side
+* Link : https://store.adnankattekaden.xyz/userlogin
 * Username : iamrich
 * Password : iamrich
 
 
 ### Admin Side
+* Link : https://store.adnankattekaden.xyz/admin
 * Username : admin
 * Password : admin
 
