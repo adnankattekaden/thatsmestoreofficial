@@ -1,6 +1,5 @@
 # thatsmestoreofficial
-This is My First Project Which I Enhanced More And Added More Features Also,
-I Believe This Project Teaches Me Lots Of Things According To The First Version Version Of Project  And Understands About How To Approach a Problem and Solve It Also Now I Got More Understanding About Django and How Those Things works
+An online shoe shop with multiple options that normal e-commerce app will provide also added more features that once the user enters into the application will leave only as a customer which shoes
 
 Technologies Used
 ---------------------------
